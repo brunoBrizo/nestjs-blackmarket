@@ -1,3 +1,5 @@
+[![Deployment Pipeline](https://github.com/brunoBrizo/nestjs-blackmarket/actions/workflows/pipeline.yml/badge.svg)](https://github.com/brunoBrizo/nestjs-blackmarket/actions/workflows/pipeline.yml)
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
