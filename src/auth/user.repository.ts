@@ -1,4 +1,4 @@
-import { ErrorCodes } from './../shared/error_codes.enum';
+import { ErrorCodes } from '../shared/utils/error_codes.enum';
 import { CreateUserDto } from './dto/create_user.dto';
 import { DataSource, Repository } from 'typeorm';
 import { User } from './user.entity';
