@@ -88,5 +88,8 @@ jobs:
         with:
           name: dist
           path: dist
+      - name: 'Create env file'
+        run: |
+          echo "${{ secrets.ENV_FILE }}" > .env.stage.$STAGE
       - name: E2E Test
         run: npm run test:e2e
