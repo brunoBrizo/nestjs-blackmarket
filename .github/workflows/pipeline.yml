@@ -91,6 +91,8 @@ jobs:
       - name: Create env file
         uses: SpicyPizza/create-envfile@v1.3
         with:
+          file_name: .env.stage.$STAGE
+          fail_on_empty: true
           DB_HOST: dbhost
           DB_PORT: 123
           DB_USERNAME: dbusername
