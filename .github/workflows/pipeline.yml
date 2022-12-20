@@ -88,8 +88,16 @@ jobs:
         with:
           name: dist
           path: dist
-      - name: 'Create env file'
-        run: |
-          echo "${{ secrets.ENV_FILE }}" > .env.stage.$STAGE
+      - name: Create env file
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          DB_HOST: dbhost
+          DB_PORT: 123
+          DB_USERNAME: dbusername
+          DB_PASSWORD: dbpassword
+          DB_DATABASE: dbdatabase
+          JWT_SECRET: jwtsecret
+          JWT_EXPIRES_IN: 3600
+          PORT: 3000
       - name: E2E Test
         run: npm run test:e2e
