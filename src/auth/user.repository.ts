@@ -1,7 +1,7 @@
-import { ErrorCodes } from '../shared/utils/error_codes.enum';
-import { CreateUserDto } from './dto/create_user.dto';
+import { ErrorCodes } from '@shared/utils/error_codes.enum';
+import { CreateUserDto } from '@auth/dto/create_user.dto';
 import { DataSource, Repository } from 'typeorm';
-import { User } from './user.entity';
+import { User } from '@auth/user.entity';
 import {
   ConflictException,
   Injectable,

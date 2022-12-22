@@ -1,12 +1,12 @@
-import { JwtPayload } from './jwt_payload.interface';
-import { JwtToken } from './jwt_token.interface';
-import { CreateUserDto } from './dto/create_user.dto';
+import { JwtPayload } from '@auth/jwt_payload.interface';
+import { JwtToken } from '@auth/jwt_token.interface';
+import { CreateUserDto } from '@auth/dto/create_user.dto';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserRepository } from './user.repository';
+import { UserRepository } from '@auth/user.repository';
 import { JwtService } from '@nestjs/jwt';
-import { hashUserPassword, comparePassword } from './utils/password.helper';
-import { SignInUserDto } from './dto/signin_user.dto';
+import { hashUserPassword, comparePassword } from '@auth/utils/password.helper';
+import { SignInUserDto } from '@auth/dto/signin_user.dto';
 
 @Injectable()
 export class AuthService {

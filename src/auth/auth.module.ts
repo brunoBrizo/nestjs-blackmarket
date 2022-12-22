@@ -1,14 +1,14 @@
 import { ConfigModule } from '@nestjs/config';
-import { UserRepository } from './user.repository';
+import { UserRepository } from '@auth/user.repository';
 import { Module } from '@nestjs/common';
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
-import { User } from './user.entity';
+import { AuthController } from '@auth/auth.controller';
+import { AuthService } from '@auth/auth.service';
+import { User } from '@auth/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import jwtModuleOptions from '../shared/config/jwt_module.config';
-import { JwtStrategy } from './jwt.strategy';
+import jwtModuleOptions from '@shared/config/jwt_module.config';
+import { JwtStrategy } from '@auth/jwt.strategy';
 
 @Module({
   imports: [

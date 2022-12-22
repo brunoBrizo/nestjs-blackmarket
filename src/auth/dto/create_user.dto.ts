@@ -6,7 +6,7 @@ import {
   MaxLength,
   MinLength
 } from 'class-validator';
-import { UserType } from '../user_type.enum';
+import { UserType } from '@auth/user_type.enum';
 
 export class CreateUserDto {
   @IsEmail()
