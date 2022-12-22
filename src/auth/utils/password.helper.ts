@@ -6,3 +6,12 @@ export const hashUserPassword = async (password: string): Promise<string> => {
 
   return hashedPassword;
 };
+
+export const comparePassword = async (
+  password: string,
+  storedPassword: string
+) => {
+  const valid = await bcrypt.compare(password, storedPassword);
+
+  return valid;
+};

@@ -22,8 +22,8 @@ export class CreateUserDto {
   password: string;
 
   @IsString()
-  @MinLength(4)
-  @MaxLength(20)
+  @MinLength(3)
+  @MaxLength(25)
   name: string;
 
   @IsEnum(UserType)
