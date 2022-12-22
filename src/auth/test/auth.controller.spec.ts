@@ -3,13 +3,14 @@ import { AuthService } from './../auth.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './../auth.controller';
 import { UserType } from '../user_type.enum';
+import { faker } from '@faker-js/faker';
 
 describe('AuthController', () => {
   let authController: AuthController;
   const createUserDto: CreateUserDto = {
-    email: 'bbrizolara7@gmail.com',
-    name: 'Bruno',
-    password: 'Bruno123!',
+    email: faker.internet.email(),
+    name: faker.internet.userName(),
+    password: faker.internet.password(),
     type: UserType.ADMIN
   };
   const mockAuthService = {
@@ -21,7 +22,7 @@ describe('AuthController', () => {
     })
   };
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AuthController],
       providers: [AuthService]

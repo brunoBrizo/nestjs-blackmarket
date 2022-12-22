@@ -5,20 +5,21 @@ import { AuthService } from './../auth.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserType } from '../user_type.enum';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { faker } from '@faker-js/faker';
 
 describe('AuthService', () => {
   let authService: AuthService;
   const createUserDto: CreateUserDto = {
-    email: 'bbrizolara7@gmail.com',
-    name: 'Bruno',
-    password: 'Bruno123!',
+    email: faker.internet.email(),
+    name: faker.internet.userName(),
+    password: faker.internet.password(),
     type: UserType.ADMIN
   };
 
   const mockUserRepository = {
     createUser: jest.fn().mockImplementation(user =>
       Promise.resolve({
-        id: '123',
+        id: faker.datatype.uuid(),
         ...user
       })
     )
@@ -31,7 +32,7 @@ describe('AuthService', () => {
       .mockImplementation(_payload => Promise.resolve('usertoken'))
   };
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         AuthService,

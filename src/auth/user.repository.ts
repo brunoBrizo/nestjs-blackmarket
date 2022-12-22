@@ -47,4 +47,18 @@ export class UserRepository extends Repository<User> {
       }
     }
   }
+
+  async findUserByEmail(email: string): Promise<User> {
+    try {
+      const user = await this.findOneBy({ email });
+
+      return user;
+    } catch (error) {
+      this.logger.error(
+        `Error finding user by email. User email: ${email}`,
+        error.stack
+      );
+      throw new InternalServerErrorException();
+    }
+  }
 }

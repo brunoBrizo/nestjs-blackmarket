@@ -5,6 +5,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { UserType } from '../src/auth/user_type.enum';
+import { faker } from '@faker-js/faker';
 
 describe('App (e2e)', () => {
   let app: INestApplication;
@@ -12,7 +13,7 @@ describe('App (e2e)', () => {
   const mockUserRepository = {
     createUser: jest.fn().mockImplementation(user =>
       Promise.resolve({
-        id: '123',
+        id: faker.datatype.uuid(),
         ...user
       })
     )
@@ -33,9 +34,9 @@ describe('App (e2e)', () => {
 
   describe('AuthModule', () => {
     const mockUser: CreateUserDto = {
-      email: 'bbrizolara7@gmail.com',
-      name: 'Bruno',
-      password: 'Bruno123!',
+      email: faker.internet.email(),
+      name: faker.internet.userName(),
+      password: faker.internet.password(),
       type: UserType.ADMIN
     };
 
@@ -52,10 +53,10 @@ describe('App (e2e)', () => {
 
     it('should get a password validation error', async () => {
       const mockUser = {
-        email: 'bbrizolara7@gmail.com',
-        name: 'Bruno',
+        email: faker.internet.email(),
+        name: faker.internet.userName(),
         password: 'bruno',
-        type: 'ADMIN'
+        type: UserType.ADMIN
       };
 
       await request(app.getHttpServer())
@@ -73,10 +74,10 @@ describe('App (e2e)', () => {
 
     it('should get an email validation error', async () => {
       const mockUser = {
-        email: 'bbrizolara7@gmail',
-        name: 'Bruno',
+        email: 'bbrizolara@gmail',
+        name: faker.internet.userName(),
         password: 'Bruno123!',
-        type: 'ADMIN'
+        type: UserType.ADMIN
       };
 
       await request(app.getHttpServer())
