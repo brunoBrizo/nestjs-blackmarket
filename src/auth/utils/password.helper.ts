@@ -1,4 +1,5 @@
 import * as bcrypt from 'bcrypt';
+import { IsStrongPasswordOptions } from 'class-validator';
 
 export const hashUserPassword = async (password: string): Promise<string> => {
   const salt = await bcrypt.genSalt();
@@ -14,4 +15,12 @@ export const comparePassword = async (
   const valid = await bcrypt.compare(password, storedPassword);
 
   return valid;
+};
+
+export const strongPasswordOptions: IsStrongPasswordOptions = {
+  minLength: 8,
+  minLowercase: 1,
+  minNumbers: 1,
+  minUppercase: 1,
+  minSymbols: 1
 };
