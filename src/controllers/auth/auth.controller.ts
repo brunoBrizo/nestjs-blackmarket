@@ -1,8 +1,7 @@
 import { Body, Controller, HttpCode, Post } from '@nestjs/common';
-import { JwtToken } from '@auth/jwt_token.interface';
-import { CreateUserDto } from '@auth/dto/create_user.dto';
-import { AuthService } from '@auth/auth.service';
-import { SignInUserDto } from '@auth/dto/signin_user.dto';
+import { JwtToken } from '@interfaces/auth';
+import { AuthService } from '@services/auth';
+import { CreateUserDto, SignInUserDto } from '@dtos/auth';
 
 @Controller('auth')
 export class AuthController {

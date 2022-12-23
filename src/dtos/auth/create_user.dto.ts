@@ -1,3 +1,4 @@
+import { strongPasswordOptions } from '@src/shared/utils';
 import {
   IsEmail,
   IsEnum,
@@ -6,8 +7,7 @@ import {
   MinLength,
   IsStrongPassword
 } from 'class-validator';
-import { UserType } from '@auth/user_type.enum';
-import { strongPasswordOptions } from './../utils/password.helper';
+import { UserType } from '@enums/auth';
 
 export class CreateUserDto {
   @IsEmail()

@@ -85,7 +85,14 @@
     "testEnvironment": "node",
     "moduleNameMapper": {
       "^@src/(.*)$": "<rootDir>/../src/$1",
-      "^@auth/(.*)$": "<rootDir>/../src/auth/$1",
+      "^@controllers/(.*)$": "<rootDir>/../src/controllers/$1",
+      "^@dtos/(.*)$": "<rootDir>/../src/dtos/$1",
+      "^@entities/(.*)$": "<rootDir>/../src/entities/$1",
+      "^@enums/(.*)$": "<rootDir>/../src/enums/$1",
+      "^@interfaces/(.*)$": "<rootDir>/../src/interfaces/$1",
+      "^@modules/(.*)$": "<rootDir>/../src/modules/$1",
+      "^@repository/(.*)$": "<rootDir>/../src/repository/$1",
+      "^@services/(.*)$": "<rootDir>/../src/services/$1",
       "^@shared/(.*)$": "<rootDir>/../src/shared/$1"
     }
   }

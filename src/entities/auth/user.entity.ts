@@ -1,6 +1,6 @@
+import { UserType } from '@enums/auth';
 import { Exclude } from 'class-transformer';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { UserType } from '@auth/user_type.enum';
 
 @Entity()
 export class User {

@@ -1,13 +1,12 @@
-import { CreateUserDto } from '@auth/dto/create_user.dto';
-import { UserRepository } from '@auth/user.repository';
+import { UserRepository } from '@src/repository/auth';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 import { AppModule } from '@src/app.module';
-import { UserType } from '@auth/user_type.enum';
+import { UserType } from '@src/enums/auth';
 import { faker } from '@faker-js/faker';
-import { SignInUserDto } from '@auth/dto/signin_user.dto';
-import { User } from '@auth/user.entity';
+import { SignInUserDto, CreateUserDto } from '@dtos/auth';
+import { User } from '@src/entities/auth';
 
 describe('App (e2e)', () => {
   let app: INestApplication;
@@ -21,12 +20,10 @@ describe('App (e2e)', () => {
   };
 
   const mockUserRepository = {
-    createUser: jest.fn().mockImplementation(user =>
-      Promise.resolve({
-        id: faker.datatype.uuid(),
-        ...user
-      })
-    ),
+    createUser: jest.fn().mockResolvedValue(user => ({
+      id: faker.datatype.uuid(),
+      ...user
+    })),
     findUserByEmail: jest.fn().mockResolvedValue(mockUser)
   };
 
@@ -47,7 +44,7 @@ describe('App (e2e)', () => {
     const mockUserDTO: CreateUserDto = {
       email: faker.internet.email(),
       name: faker.name.firstName(),
-      password: faker.internet.password(),
+      password: 'Bruno123!',
       type: UserType.ADMIN
     };
 
@@ -76,8 +73,7 @@ describe('App (e2e)', () => {
         .expect(400, {
           statusCode: 400,
           message: [
-            'Password must have upper and lower case letters, at least 1 number or special character',
-            'password must be longer than or equal to 8 characters'
+            'Password must have upper and lower case letters, at least 1 number or special character, at least 8 characters'
           ],
           error: 'Bad Request'
         });
