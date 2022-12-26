@@ -1,5 +1,5 @@
 import { ConfigModuleOptions } from '@nestjs/config';
-import { configValidationSchema } from './config.schema';
+import { configValidationSchema } from '@shared/config/config.schema';
 
 const configModuleOptions: ConfigModuleOptions = {
   envFilePath: [`.env.stage.${process.env.STAGE}`],

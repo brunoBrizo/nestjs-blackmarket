@@ -2,28 +2,28 @@ import {
   IsEmail,
   IsEnum,
   IsString,
-  Matches,
   MaxLength,
-  MinLength
+  MinLength,
+  IsStrongPassword
 } from 'class-validator';
-import { UserType } from '../user_type.enum';
+import { UserType } from '@auth/user_type.enum';
+import { strongPasswordOptions } from './../utils/password.helper';
 
 export class CreateUserDto {
   @IsEmail()
   email: string;
 
   @IsString()
-  @MinLength(8)
   @MaxLength(32)
-  @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
+  @IsStrongPassword(strongPasswordOptions, {
     message:
-      'Password must have upper and lower case letters, at least 1 number or special character'
+      'Password must have upper and lower case letters, at least 1 number or special character, at least 8 characters'
   })
   password: string;
 
   @IsString()
-  @MinLength(4)
-  @MaxLength(20)
+  @MinLength(3)
+  @MaxLength(25)
   name: string;
 
   @IsEnum(UserType)
