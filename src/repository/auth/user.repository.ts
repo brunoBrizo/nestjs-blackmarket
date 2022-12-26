@@ -1,4 +1,4 @@
-import { CreateUserDto } from '@src/dtos/auth';
+import { CreateUserDto } from '@dtos/auth';
 import { DataSource, Repository } from 'typeorm';
 import {
   ConflictException,

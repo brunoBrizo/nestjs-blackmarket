@@ -1,7 +1,7 @@
-import { AuthService } from '@src/services/auth';
+import { AuthService } from '@services/auth';
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthController } from '@src/controllers/auth';
-import { UserType } from '@src/enums/auth';
+import { AuthController } from '@controllers/auth';
+import { UserType } from '@enums/auth';
 import { faker } from '@faker-js/faker';
 import { SignInUserDto, CreateUserDto } from '@dtos/auth';
 
