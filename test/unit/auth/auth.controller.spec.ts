@@ -1,10 +1,9 @@
-import { CreateUserDto } from '@auth/dto/create_user.dto';
-import { AuthService } from '@auth/auth.service';
+import { AuthService } from '@src/services/auth';
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthController } from '@auth/auth.controller';
-import { UserType } from '@auth/user_type.enum';
+import { AuthController } from '@src/controllers/auth';
+import { UserType } from '@src/enums/auth';
 import { faker } from '@faker-js/faker';
-import { SignInUserDto } from '@auth/dto/signin_user.dto';
+import { SignInUserDto, CreateUserDto } from '@dtos/auth';
 
 describe('AuthController', () => {
   let authController: AuthController;

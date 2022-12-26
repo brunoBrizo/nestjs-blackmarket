@@ -1,9 +1,9 @@
 import { ConfigModule } from '@nestjs/config';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from '@auth/auth.module';
-import typeOrmConfig from '@shared/config/typeorm.config';
-import configModuleOptions from '@shared/config/config_module.config';
+import { AuthModule } from '@src/modules/auth';
+import { typeOrmConfig } from '@shared/config';
+import { configModuleOptions } from '@shared/config';
 
 @Module({
   imports: [

@@ -1,14 +1,14 @@
-import { ErrorCodes } from '@shared/utils/error_codes.enum';
-import { CreateUserDto } from '@auth/dto/create_user.dto';
+import { CreateUserDto } from '@src/dtos/auth';
 import { DataSource, Repository } from 'typeorm';
-import { User } from '@auth/user.entity';
 import {
   ConflictException,
   Injectable,
   InternalServerErrorException,
   Logger
 } from '@nestjs/common';
-import { UserType } from './user_type.enum';
+import { User } from '@entities/auth';
+import { ErrorCodes } from '@enums/error_codes.enum';
+import { UserType } from '@enums/auth';
 
 @Injectable()
 export class UserRepository extends Repository<User> {
