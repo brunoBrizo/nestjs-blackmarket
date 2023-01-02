@@ -8,6 +8,7 @@ import {
 import { ErrorCodes } from '@enums/error_codes.enum';
 import { Product } from '@entities/product';
 import { CreateProductDto } from '@dtos/product';
+import { Category } from '@entities/category';
 
 @Injectable()
 export class ProductRepository extends Repository<Product> {
@@ -16,14 +17,18 @@ export class ProductRepository extends Repository<Product> {
     super(Product, dataSource.createEntityManager());
   }
 
-  async createProduct(createProductDto: CreateProductDto): Promise<Product> {
+  async createProduct(
+    createProductDto: CreateProductDto,
+    category: Category
+  ): Promise<Product> {
     const { name, description, price, stock } = createProductDto;
 
     const product = this.create({
       name,
       description,
       price,
-      stock
+      stock,
+      category
     });
 
     try {
@@ -52,6 +57,17 @@ export class ProductRepository extends Repository<Product> {
       return product;
     } catch (error) {
       this.logger.error(`Error getting a product by name`, error);
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async findById(id: string): Promise<Product> {
+    try {
+      const product = await this.findOneBy({ id });
+
+      return product;
+    } catch (error) {
+      this.logger.error(`Error getting a product by id`, error);
       throw new InternalServerErrorException();
     }
   }

@@ -1,30 +1,24 @@
-import { Category } from '@entities/category';
+import { Product } from '@entities/product';
 import { Exclude } from 'class-transformer';
 import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm';
 
 @Entity()
-export class Product {
+export class Category {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({ unique: true })
   name: string;
 
-  @Column('decimal')
-  price: number;
-
   @Column()
   description: string;
-
-  @Column()
-  stock: number;
 
   @CreateDateColumn()
   created_at: Date;
@@ -33,10 +27,6 @@ export class Product {
   @Exclude({ toPlainOnly: true })
   updated_at: Date;
 
-  @ManyToOne(() => Category, category => category.products, {
-    eager: true,
-    cascade: true,
-    onDelete: 'SET NULL'
-  })
-  category: Category;
+  @OneToMany(() => Product, product => product.category, {})
+  products: Product[];
 }

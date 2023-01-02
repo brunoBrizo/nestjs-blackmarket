@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsNumber, IsString, MaxLength } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  IsUUID,
+  MaxLength
+} from 'class-validator';
 
 export class CreateProductDto {
   @IsString()
@@ -18,4 +24,7 @@ export class CreateProductDto {
   @IsNumber({ maxDecimalPlaces: 2 })
   @IsNotEmpty()
   stock: number;
+
+  @IsUUID()
+  categoryId: string;
 }
