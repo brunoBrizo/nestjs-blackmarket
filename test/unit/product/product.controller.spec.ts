@@ -1,3 +1,4 @@
+import { Category } from '@entities/category';
 import { Test, TestingModule } from '@nestjs/testing';
 import { faker } from '@faker-js/faker';
 import { ProductController } from '@controllers/product';
@@ -12,14 +13,25 @@ describe('ProductController', () => {
     name: faker.commerce.productName(),
     description: faker.commerce.productDescription(),
     price: parseFloat(faker.commerce.price()),
-    stock: parseInt(faker.random.numeric(2))
+    stock: parseInt(faker.random.numeric(2)),
+    categoryId: faker.datatype.uuid()
   };
 
   const updateProductDto: UpdateProductDto = {
     name: faker.commerce.productName(),
     description: faker.commerce.productDescription(),
     price: parseFloat(faker.commerce.price()),
-    stock: parseInt(faker.random.numeric(2))
+    stock: parseInt(faker.random.numeric(2)),
+    categoryId: faker.datatype.uuid()
+  };
+
+  const mockCategory: Category = {
+    id: faker.datatype.uuid(),
+    name: faker.commerce.productAdjective(),
+    description: faker.commerce.productDescription(),
+    created_at: faker.date.recent(),
+    updated_at: faker.date.recent(),
+    products: []
   };
 
   const mockProduct: Product = {
@@ -29,7 +41,8 @@ describe('ProductController', () => {
     price: parseFloat(faker.commerce.price()),
     stock: parseInt(faker.random.numeric(2)),
     created_at: faker.date.recent(),
-    updated_at: faker.date.recent()
+    updated_at: faker.date.recent(),
+    category: mockCategory
   };
 
   const mockProductService = {
