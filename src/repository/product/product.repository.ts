@@ -52,9 +52,7 @@ export class ProductRepository extends Repository<Product> {
 
   async findByName(name: string): Promise<Product> {
     try {
-      const product = await this.findOneBy({ name });
-
-      return product;
+      return await this.findOneBy({ name });
     } catch (error) {
       this.logger.error(`Error getting a product by name`, error);
       throw new InternalServerErrorException();

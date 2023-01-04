@@ -1,10 +1,6 @@
 import { Product } from '@entities/product';
 import { CreateProductDto, UpdateProductDto } from '@dtos/product';
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductRepository } from '@repository/product';
 import { CategoryRepository } from '@repository/category';
@@ -38,34 +34,13 @@ export class ProductService {
     id: string,
     updateProductDto: UpdateProductDto
   ): Promise<Product> {
-    const storedProduct = await this.productRepository.findById(id);
+    const storedProduct = await this.productRepository.findOneBy({ id });
     if (!storedProduct) {
       throw new NotFoundException(`Product with id: ${id} was not found`);
     }
 
-    const { name, categoryId } = updateProductDto;
-
-    if (name !== storedProduct.name) {
-      const productExists = await this.productRepository.findByName(name);
-      if (productExists) {
-        throw new ConflictException('Product name already in use');
-      }
-    }
-
-    if (categoryId !== storedProduct.category.id) {
-      const updatedCategory = await this.categoryRepository.findById(
-        categoryId
-      );
-
-      if (updatedCategory) {
-        storedProduct.category = updatedCategory;
-      } else {
-        throw new NotFoundException(`Category ${categoryId} was not found`);
-      }
-    }
-
-    const updatedProduct = { ...storedProduct, ...updateProductDto };
-    return this.productRepository.updateProduct(updatedProduct);
+    const updatedProduct: Product = { ...storedProduct, ...updateProductDto };
+    return await this.productRepository.updateProduct(updatedProduct);
   }
 
   async deleteProduct(id: string): Promise<void> {
