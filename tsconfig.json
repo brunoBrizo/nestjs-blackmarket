@@ -28,6 +28,7 @@
       "@services/*": ["src/services/*"],
       "@src/*": ["src/*"],
       "@shared/*": ["src/shared/*"],
+      "@decorators/*": ["src/decorators/*"],
     }
   }
 }

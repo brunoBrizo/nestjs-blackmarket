@@ -16,6 +16,7 @@
       "^@modules/(.*)$": "<rootDir>/../src/modules/$1",
       "^@repository/(.*)$": "<rootDir>/../src/repository/$1",
       "^@services/(.*)$": "<rootDir>/../src/services/$1",
-      "^@shared/(.*)$": "<rootDir>/../src/shared/$1"
+      "^@shared/(.*)$": "<rootDir>/../src/shared/$1",
+      "^@decorators/(.*)$": "<rootDir>/../src/decorators/$1"
   }
 }

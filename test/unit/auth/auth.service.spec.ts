@@ -1,13 +1,13 @@
 import { UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserRepository } from '@src/repository/auth';
-import { AuthService } from '@src/services/auth';
+import { UserRepository } from '@repository/auth';
+import { AuthService } from '@services/auth';
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserType } from '@src/enums/auth';
+import { UserType } from '@enums/auth';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { faker } from '@faker-js/faker';
 import { SignInUserDto, CreateUserDto } from '@dtos/auth';
-import { User } from '@src/entities/auth';
+import { User } from '@entities/auth';
 
 describe('AuthService', () => {
   let authService: AuthService;

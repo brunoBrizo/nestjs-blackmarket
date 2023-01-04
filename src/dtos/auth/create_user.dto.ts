@@ -1,4 +1,4 @@
-import { strongPasswordOptions } from '@src/shared/utils';
+import { strongPasswordOptions } from '@shared/utils';
 import {
   IsEmail,
   IsEnum,

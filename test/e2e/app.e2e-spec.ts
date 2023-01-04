@@ -1,12 +1,12 @@
-import { UserRepository } from '@src/repository/auth';
+import { UserRepository } from '@repository/auth';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 import { AppModule } from '@src/app.module';
-import { UserType } from '@src/enums/auth';
+import { UserType } from '@enums/auth';
 import { faker } from '@faker-js/faker';
 import { SignInUserDto, CreateUserDto } from '@dtos/auth';
-import { User } from '@src/entities/auth';
+import { User } from '@entities/auth';
 
 describe('App (e2e)', () => {
   let app: INestApplication;
