@@ -16,7 +16,6 @@ describe('CategoryService', () => {
   };
 
   const updateCategoryDto: UpdateCategoryDto = {
-    name: categoryName,
     description: faker.commerce.productDescription()
   };
 
@@ -24,8 +23,8 @@ describe('CategoryService', () => {
     id: faker.datatype.uuid(),
     name: categoryName,
     description: faker.commerce.productDescription(),
-    created_at: faker.date.recent(),
-    updated_at: faker.date.recent(),
+    createdAt: faker.date.recent(),
+    updatedAt: faker.date.recent(),
     products: []
   };
 

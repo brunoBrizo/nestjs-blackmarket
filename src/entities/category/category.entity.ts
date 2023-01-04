@@ -1,31 +1,14 @@
+import { BaseEntity } from '@entities/base';
 import { Product } from '@entities/product';
-import { Exclude } from 'class-transformer';
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn
-} from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 
 @Entity()
-export class Category {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class Category extends BaseEntity {
   @Column({ unique: true })
   name: string;
 
   @Column()
   description: string;
-
-  @CreateDateColumn()
-  created_at: Date;
-
-  @UpdateDateColumn()
-  @Exclude({ toPlainOnly: true })
-  updated_at: Date;
 
   @OneToMany(() => Product, product => product.category, {})
   products: Product[];

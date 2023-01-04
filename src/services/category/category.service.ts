@@ -1,10 +1,6 @@
 import { CreateCategoryDto, UpdateCategoryDto } from '@dtos/category';
 import { Category } from '@entities/category';
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CategoryRepository } from '@repository/category';
 
@@ -32,15 +28,6 @@ export class CategoryService {
     const storedCategory = await this.categoryRepository.findById(id);
     if (!storedCategory) {
       throw new NotFoundException(`Category with id: ${id} was not found`);
-    }
-
-    const { name } = updateCategoryDto;
-
-    if (name !== storedCategory.name) {
-      const categoryExists = await this.categoryRepository.findByName(name);
-      if (categoryExists) {
-        throw new ConflictException('Category name already in use');
-      }
     }
 
     const updatedCategory = { ...storedCategory, ...updateCategoryDto };
