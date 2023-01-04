@@ -1,3 +1,4 @@
+import { SubCategory } from '@entities/subcategory';
 import { Category } from '@entities/category';
 import { Exclude } from 'class-transformer';
 import {
@@ -39,4 +40,11 @@ export class Product {
     onDelete: 'SET NULL'
   })
   category: Category;
+
+  @ManyToOne(() => SubCategory, subCategory => subCategory.products, {
+    eager: true,
+    cascade: true,
+    onDelete: 'SET NULL'
+  })
+  subCategory: SubCategory;
 }
