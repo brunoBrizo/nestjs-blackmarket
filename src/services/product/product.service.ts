@@ -1,10 +1,6 @@
 import { Product } from '@entities/product';
 import { CreateProductDto, UpdateProductDto } from '@dtos/product';
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductRepository } from '@repository/product';
 
@@ -32,17 +28,8 @@ export class ProductService {
       throw new NotFoundException(`Product with id: ${id} was not found`);
     }
 
-    const { name } = updateProductDto;
-
-    if (name !== storedProduct.name) {
-      const productExists = await this.productRepository.findByName(name);
-      if (productExists) {
-        throw new ConflictException('Product name already in use');
-      }
-    }
-
-    const updatedProduct = { ...storedProduct, ...updateProductDto };
-    return this.productRepository.updateProduct(updatedProduct);
+    const updatedProduct: Product = { ...storedProduct, ...updateProductDto };
+    return await this.productRepository.updateProduct(updatedProduct);
   }
 
   async deleteProduct(id: string): Promise<void> {

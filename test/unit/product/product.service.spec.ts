@@ -17,7 +17,6 @@ describe('ProductService', () => {
   };
 
   const updateProductDto: UpdateProductDto = {
-    name: faker.commerce.productName(),
     description: faker.commerce.productDescription(),
     price: parseFloat(faker.commerce.price()),
     stock: parseInt(faker.random.numeric(2))
@@ -29,8 +28,8 @@ describe('ProductService', () => {
     description: faker.commerce.productDescription(),
     price: parseFloat(faker.commerce.price()),
     stock: parseInt(faker.random.numeric(2)),
-    created_at: faker.date.recent(),
-    updated_at: faker.date.recent()
+    createdAt: faker.date.recent(),
+    updatedAt: faker.date.recent()
   };
 
   const mockProductRepository = {

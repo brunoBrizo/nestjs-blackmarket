@@ -1,17 +1,8 @@
-import { Exclude } from 'class-transformer';
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn
-} from 'typeorm';
+import { BaseEntity } from '@entities/base';
+import { Column, Entity } from 'typeorm';
 
 @Entity()
-export class Product {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class Product extends BaseEntity {
   @Column({ unique: true })
   name: string;
 
@@ -23,11 +14,4 @@ export class Product {
 
   @Column()
   stock: number;
-
-  @CreateDateColumn()
-  created_at: Date;
-
-  @UpdateDateColumn()
-  @Exclude({ toPlainOnly: true })
-  updated_at: Date;
 }
