@@ -7,13 +7,13 @@ import { ProductService } from '@services/product';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { ProductRepository } from '@repository/product';
 import { Category } from '@entities/category';
+import { SubCategory } from '@entities/subcategory';
 
 describe('ProductService', () => {
   let productService: ProductService;
-  const productName = faker.commerce.productName();
 
   const createProductDto: CreateProductDto = {
-    name: productName,
+    name: faker.commerce.productName(),
     description: faker.commerce.productDescription(),
     price: parseFloat(faker.commerce.price()),
     stock: parseInt(faker.random.numeric(2)),
@@ -21,7 +21,6 @@ describe('ProductService', () => {
   };
 
   const updateProductDto: UpdateProductDto = {
-    name: productName,
     description: faker.commerce.productDescription(),
     price: parseFloat(faker.commerce.price()),
     stock: parseInt(faker.random.numeric(2)),
@@ -38,6 +37,16 @@ describe('ProductService', () => {
     subCategories: []
   };
 
+  const mockSubCategory: SubCategory = {
+    id: faker.datatype.uuid(),
+    name: faker.commerce.productAdjective(),
+    description: faker.commerce.productDescription(),
+    createdAt: faker.date.recent(),
+    updatedAt: faker.date.recent(),
+    products: [],
+    category: mockCategory
+  };
+
   const mockProduct: Product = {
     id: faker.datatype.uuid(),
     name: faker.commerce.productName(),
@@ -47,7 +56,7 @@ describe('ProductService', () => {
     createdAt: faker.date.recent(),
     updatedAt: faker.date.recent(),
     category: mockCategory,
-    subCategory: null
+    subCategory: mockSubCategory
   };
 
   const mockProductRepository = {

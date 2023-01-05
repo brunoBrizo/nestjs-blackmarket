@@ -1,3 +1,4 @@
+import { SubCategory } from '@entities/subcategory';
 import { Category } from '@entities/category';
 import { Test, TestingModule } from '@nestjs/testing';
 import { faker } from '@faker-js/faker';
@@ -18,7 +19,6 @@ describe('ProductController', () => {
   };
 
   const updateProductDto: UpdateProductDto = {
-    name: faker.commerce.productName(),
     description: faker.commerce.productDescription(),
     price: parseFloat(faker.commerce.price()),
     stock: parseInt(faker.random.numeric(2)),
@@ -35,6 +35,16 @@ describe('ProductController', () => {
     subCategories: []
   };
 
+  const mockSubCategory: SubCategory = {
+    id: faker.datatype.uuid(),
+    name: faker.commerce.productAdjective(),
+    description: faker.commerce.productDescription(),
+    createdAt: faker.date.recent(),
+    updatedAt: faker.date.recent(),
+    products: [],
+    category: mockCategory
+  };
+
   const mockProduct: Product = {
     id: faker.datatype.uuid(),
     name: faker.commerce.productName(),
@@ -44,7 +54,7 @@ describe('ProductController', () => {
     createdAt: faker.date.recent(),
     updatedAt: faker.date.recent(),
     category: mockCategory,
-    subCategory: null
+    subCategory: mockSubCategory
   };
 
   const mockProductService = {
