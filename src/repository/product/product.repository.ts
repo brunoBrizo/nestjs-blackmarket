@@ -61,9 +61,7 @@ export class ProductRepository extends Repository<Product> {
 
   async findById(id: string): Promise<Product> {
     try {
-      const product = await this.findOneBy({ id });
-
-      return product;
+      return await this.findOneBy({ id });
     } catch (error) {
       this.logger.error(`Error getting a product by id`, error);
       throw new InternalServerErrorException();

@@ -1,35 +1,16 @@
+import { BaseEntity } from '@entities/base';
 import { Category } from '@entities/category';
 import { Product } from '@entities/product';
-import { Exclude } from 'class-transformer';
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  Unique,
-  UpdateDateColumn
-} from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, Unique } from 'typeorm';
 
 @Entity()
 @Unique(['category', 'name'])
-export class SubCategory {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class SubCategory extends BaseEntity {
   @Column()
   name: string;
 
   @Column()
   description: string;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  @Exclude({ toPlainOnly: true })
-  updatedAt: Date;
 
   @ManyToOne(() => Category, category => category.subCategories, {
     eager: true

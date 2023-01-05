@@ -1,4 +1,4 @@
-import { DESCRIPTION_MAX_LENGTH, NAME_MAX_LENGTH } from '@src/shared/utils';
+import { DESCRIPTION_MAX_LENGTH } from '@src/shared/utils';
 import {
   IsNotEmpty,
   IsNumber,
@@ -8,11 +8,6 @@ import {
 } from 'class-validator';
 
 export class UpdateProductDto {
-  @IsString()
-  @IsNotEmpty()
-  @MaxLength(NAME_MAX_LENGTH)
-  name: string;
-
   @IsString()
   @IsNotEmpty()
   @MaxLength(DESCRIPTION_MAX_LENGTH)

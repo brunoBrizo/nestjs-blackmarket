@@ -22,12 +22,10 @@ export class SubCategoryService {
 
     const category = await this.getCategory(categoryId);
 
-    const subCategory = await this.subCategoryRepository.createSubCategory(
+    return await this.subCategoryRepository.createSubCategory(
       createSubCategoryDto,
       category
     );
-
-    return subCategory;
   }
 
   async updateSubCategory(

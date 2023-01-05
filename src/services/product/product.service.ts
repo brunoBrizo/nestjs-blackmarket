@@ -22,12 +22,10 @@ export class ProductService {
       throw new NotFoundException(`Category ${categoryId} was not found`);
     }
 
-    const product = await this.productRepository.createProduct(
+    return await this.productRepository.createProduct(
       createProductDto,
       category
     );
-
-    return product;
   }
 
   async updateProduct(
