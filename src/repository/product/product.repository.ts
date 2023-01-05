@@ -1,3 +1,4 @@
+import { SubCategory } from '@entities/subcategory';
 import { DataSource, Repository } from 'typeorm';
 import {
   ConflictException,
@@ -19,7 +20,8 @@ export class ProductRepository extends Repository<Product> {
 
   async createProduct(
     createProductDto: CreateProductDto,
-    category: Category
+    category: Category,
+    subCategory: SubCategory
   ): Promise<Product> {
     const { name, description, price, stock } = createProductDto;
 
@@ -28,7 +30,8 @@ export class ProductRepository extends Repository<Product> {
       description,
       price,
       stock,
-      category
+      category,
+      subCategory
     });
 
     try {

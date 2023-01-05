@@ -8,27 +8,30 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { ProductRepository } from '@repository/product';
 import { Category } from '@entities/category';
 import { SubCategory } from '@entities/subcategory';
+import { SubCategoryRepository } from '@repository/subcategory';
 
 describe('ProductService', () => {
   let productService: ProductService;
+  const subCategoryId = faker.datatype.uuid();
+  const categoryId = faker.datatype.uuid();
 
   const createProductDto: CreateProductDto = {
     name: faker.commerce.productName(),
     description: faker.commerce.productDescription(),
     price: parseFloat(faker.commerce.price()),
     stock: parseInt(faker.random.numeric(2)),
-    categoryId: faker.datatype.uuid()
+    categoryId,
+    subCategoryId
   };
 
   const updateProductDto: UpdateProductDto = {
     description: faker.commerce.productDescription(),
     price: parseFloat(faker.commerce.price()),
-    stock: parseInt(faker.random.numeric(2)),
-    categoryId: faker.datatype.uuid()
+    stock: parseInt(faker.random.numeric(2))
   };
 
   const mockCategory: Category = {
-    id: faker.datatype.uuid(),
+    id: categoryId,
     name: faker.commerce.productAdjective(),
     description: faker.commerce.productDescription(),
     createdAt: faker.date.recent(),
@@ -38,7 +41,7 @@ describe('ProductService', () => {
   };
 
   const mockSubCategory: SubCategory = {
-    id: faker.datatype.uuid(),
+    id: subCategoryId,
     name: faker.commerce.productAdjective(),
     description: faker.commerce.productDescription(),
     createdAt: faker.date.recent(),
@@ -72,6 +75,10 @@ describe('ProductService', () => {
     findById: jest.fn().mockResolvedValue(mockCategory)
   };
 
+  const mockSubCategoryRepository = {
+    findById: jest.fn().mockResolvedValue(mockSubCategory)
+  };
+
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -83,6 +90,10 @@ describe('ProductService', () => {
         {
           provide: getRepositoryToken(CategoryRepository),
           useValue: mockCategoryRepository
+        },
+        {
+          provide: getRepositoryToken(SubCategoryRepository),
+          useValue: mockSubCategoryRepository
         }
       ]
     }).compile();

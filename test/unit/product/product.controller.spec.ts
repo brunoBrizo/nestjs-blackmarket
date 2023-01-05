@@ -15,14 +15,14 @@ describe('ProductController', () => {
     description: faker.commerce.productDescription(),
     price: parseFloat(faker.commerce.price()),
     stock: parseInt(faker.random.numeric(2)),
-    categoryId: faker.datatype.uuid()
+    categoryId: faker.datatype.uuid(),
+    subCategoryId: faker.datatype.uuid()
   };
 
   const updateProductDto: UpdateProductDto = {
     description: faker.commerce.productDescription(),
     price: parseFloat(faker.commerce.price()),
-    stock: parseInt(faker.random.numeric(2)),
-    categoryId: faker.datatype.uuid()
+    stock: parseInt(faker.random.numeric(2))
   };
 
   const mockCategory: Category = {
