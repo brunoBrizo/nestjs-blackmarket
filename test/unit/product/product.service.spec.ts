@@ -1,3 +1,4 @@
+import { CategoryRepository } from '@repository/category';
 import { Test, TestingModule } from '@nestjs/testing';
 import { faker } from '@faker-js/faker';
 import { CreateProductDto, UpdateProductDto } from '@dtos/product';
@@ -5,21 +6,35 @@ import { Product } from '@entities/product';
 import { ProductService } from '@services/product';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { ProductRepository } from '@repository/product';
+import { Category } from '@entities/category';
 
 describe('ProductService', () => {
   let productService: ProductService;
+  const productName = faker.commerce.productName();
 
   const createProductDto: CreateProductDto = {
-    name: faker.commerce.productName(),
+    name: productName,
     description: faker.commerce.productDescription(),
     price: parseFloat(faker.commerce.price()),
-    stock: parseInt(faker.random.numeric(2))
+    stock: parseInt(faker.random.numeric(2)),
+    categoryId: faker.datatype.uuid()
   };
 
   const updateProductDto: UpdateProductDto = {
+    name: productName,
     description: faker.commerce.productDescription(),
     price: parseFloat(faker.commerce.price()),
-    stock: parseInt(faker.random.numeric(2))
+    stock: parseInt(faker.random.numeric(2)),
+    categoryId: faker.datatype.uuid()
+  };
+
+  const mockCategory: Category = {
+    id: faker.datatype.uuid(),
+    name: faker.commerce.productAdjective(),
+    description: faker.commerce.productDescription(),
+    createdAt: faker.date.recent(),
+    updatedAt: faker.date.recent(),
+    products: []
   };
 
   const mockProduct: Product = {
@@ -29,15 +44,21 @@ describe('ProductService', () => {
     price: parseFloat(faker.commerce.price()),
     stock: parseInt(faker.random.numeric(2)),
     createdAt: faker.date.recent(),
-    updatedAt: faker.date.recent()
+    updatedAt: faker.date.recent(),
+    category: mockCategory
   };
 
   const mockProductRepository = {
     createProduct: jest.fn().mockResolvedValue(mockProduct),
     updateProduct: jest.fn().mockResolvedValue(mockProduct),
     deleteProduct: jest.fn().mockResolvedValue(undefined),
-    findByName: jest.fn().mockResolvedValue(undefined),
-    findOneBy: jest.fn().mockResolvedValue(mockProduct)
+    findByName: jest.fn().mockResolvedValue(mockProduct),
+    findOneBy: jest.fn().mockResolvedValue(mockProduct),
+    findById: jest.fn().mockResolvedValue(mockProduct)
+  };
+
+  const mockCategoryRepository = {
+    findById: jest.fn().mockResolvedValue(mockCategory)
   };
 
   beforeAll(async () => {
@@ -47,6 +68,10 @@ describe('ProductService', () => {
         {
           provide: getRepositoryToken(ProductRepository),
           useValue: mockProductRepository
+        },
+        {
+          provide: getRepositoryToken(CategoryRepository),
+          useValue: mockCategoryRepository
         }
       ]
     }).compile();

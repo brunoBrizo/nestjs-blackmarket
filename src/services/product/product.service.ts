@@ -3,17 +3,28 @@ import { CreateProductDto, UpdateProductDto } from '@dtos/product';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductRepository } from '@repository/product';
+import { CategoryRepository } from '@repository/category';
 
 @Injectable()
 export class ProductService {
   constructor(
     @InjectRepository(ProductRepository)
-    private productRepository: ProductRepository
+    private productRepository: ProductRepository,
+    @InjectRepository(CategoryRepository)
+    private categoryRepository: CategoryRepository
   ) {}
 
-  async createProduct(creadteProductDto: CreateProductDto): Promise<Product> {
+  async createProduct(createProductDto: CreateProductDto): Promise<Product> {
+    const { categoryId } = createProductDto;
+
+    const category = await this.categoryRepository.findById(categoryId);
+    if (!category) {
+      throw new NotFoundException(`Category ${categoryId} was not found`);
+    }
+
     const product = await this.productRepository.createProduct(
-      creadteProductDto
+      createProductDto,
+      category
     );
 
     return product;

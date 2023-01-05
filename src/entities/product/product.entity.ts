@@ -1,5 +1,6 @@
 import { BaseEntity } from '@entities/base';
-import { Column, Entity } from 'typeorm';
+import { Category } from '@entities/category';
+import { Column, Entity, ManyToOne } from 'typeorm';
 
 @Entity()
 export class Product extends BaseEntity {
@@ -14,4 +15,11 @@ export class Product extends BaseEntity {
 
   @Column()
   stock: number;
+
+  @ManyToOne(() => Category, category => category.products, {
+    eager: true,
+    cascade: true,
+    onDelete: 'SET NULL'
+  })
+  category: Category;
 }
