@@ -1,4 +1,4 @@
-import { strongPasswordOptions } from '@shared/utils';
+import { NAME_MAX_LENGTH, strongPasswordOptions } from '@shared/utils';
 import {
   IsEmail,
   IsEnum,
@@ -23,7 +23,7 @@ export class CreateUserDto {
 
   @IsString()
   @MinLength(3)
-  @MaxLength(25)
+  @MaxLength(NAME_MAX_LENGTH)
   name: string;
 
   @IsEnum(UserType)
