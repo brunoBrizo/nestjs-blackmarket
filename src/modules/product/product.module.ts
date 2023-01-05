@@ -6,10 +6,16 @@ import { ProductController } from '@controllers/product';
 import { AuthModule } from '@modules/auth';
 import { ProductRepository } from '@repository/product';
 import { CategoryRepository } from '@repository/category';
+import { SubCategoryRepository } from '@repository/subcategory';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Product]), AuthModule],
   controllers: [ProductController],
-  providers: [ProductService, ProductRepository, CategoryRepository]
+  providers: [
+    ProductService,
+    ProductRepository,
+    CategoryRepository,
+    SubCategoryRepository
+  ]
 })
 export class ProductModule {}

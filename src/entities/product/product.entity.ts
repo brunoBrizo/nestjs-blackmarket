@@ -1,5 +1,6 @@
 import { BaseEntity } from '@entities/base';
 import { Category } from '@entities/category';
+import { SubCategory } from '@entities/subcategory';
 import { Column, Entity, ManyToOne } from 'typeorm';
 
 @Entity()
@@ -22,4 +23,11 @@ export class Product extends BaseEntity {
     onDelete: 'SET NULL'
   })
   category: Category;
+
+  @ManyToOne(() => SubCategory, subCategory => subCategory.products, {
+    eager: true,
+    cascade: true,
+    onDelete: 'SET NULL'
+  })
+  subCategory: SubCategory;
 }

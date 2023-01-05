@@ -6,6 +6,7 @@ import { typeOrmConfig } from '@shared/config';
 import { configModuleOptions } from '@shared/config';
 import { ProductModule } from '@modules/product';
 import { CategoryModule } from '@modules/category';
+import { SubCategoryModule } from '@modules/subcategory';
 
 @Module({
   imports: [
@@ -13,7 +14,8 @@ import { CategoryModule } from '@modules/category';
     TypeOrmModule.forRootAsync(typeOrmConfig),
     AuthModule,
     ProductModule,
-    CategoryModule
+    CategoryModule,
+    SubCategoryModule
   ]
 })
 export class AppModule {}
