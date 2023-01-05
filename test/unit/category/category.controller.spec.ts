@@ -14,7 +14,6 @@ describe('CategoryController', () => {
   };
 
   const updateCategoryDto: UpdateCategoryDto = {
-    name: faker.commerce.productAdjective(),
     description: faker.commerce.productDescription()
   };
 
@@ -22,9 +21,10 @@ describe('CategoryController', () => {
     id: faker.datatype.uuid(),
     name: faker.commerce.productAdjective(),
     description: faker.commerce.productDescription(),
-    created_at: faker.date.recent(),
-    updated_at: faker.date.recent(),
-    products: []
+    createdAt: faker.date.recent(),
+    updatedAt: faker.date.recent(),
+    products: [],
+    subCategories: []
   };
 
   const mockCategoryService = {

@@ -1,20 +1,10 @@
-import { SubCategory } from '@entities/subcategory';
+import { BaseEntity } from '@entities/base';
 import { Category } from '@entities/category';
-import { Exclude } from 'class-transformer';
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn
-} from 'typeorm';
+import { SubCategory } from '@entities/subcategory';
+import { Column, Entity, ManyToOne } from 'typeorm';
 
 @Entity()
-export class Product {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+export class Product extends BaseEntity {
   @Column({ unique: true })
   name: string;
 
@@ -26,13 +16,6 @@ export class Product {
 
   @Column()
   stock: number;
-
-  @CreateDateColumn()
-  created_at: Date;
-
-  @UpdateDateColumn()
-  @Exclude({ toPlainOnly: true })
-  updated_at: Date;
 
   @ManyToOne(() => Category, category => category.products, {
     eager: true,

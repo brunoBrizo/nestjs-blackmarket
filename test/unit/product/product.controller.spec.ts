@@ -29,9 +29,10 @@ describe('ProductController', () => {
     id: faker.datatype.uuid(),
     name: faker.commerce.productAdjective(),
     description: faker.commerce.productDescription(),
-    created_at: faker.date.recent(),
-    updated_at: faker.date.recent(),
-    products: []
+    createdAt: faker.date.recent(),
+    updatedAt: faker.date.recent(),
+    products: [],
+    subCategories: []
   };
 
   const mockProduct: Product = {
@@ -40,9 +41,10 @@ describe('ProductController', () => {
     description: faker.commerce.productDescription(),
     price: parseFloat(faker.commerce.price()),
     stock: parseInt(faker.random.numeric(2)),
-    created_at: faker.date.recent(),
-    updated_at: faker.date.recent(),
-    category: mockCategory
+    createdAt: faker.date.recent(),
+    updatedAt: faker.date.recent(),
+    category: mockCategory,
+    subCategory: null
   };
 
   const mockProductService = {

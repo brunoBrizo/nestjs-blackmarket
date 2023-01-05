@@ -49,9 +49,7 @@ export class CategoryRepository extends Repository<Category> {
 
   async findByName(name: string): Promise<Category> {
     try {
-      const category = await this.findOneBy({ name });
-
-      return category;
+      return await this.findOneBy({ name });
     } catch (error) {
       this.logger.error(`Error getting a category by name`, error);
       throw new InternalServerErrorException();
@@ -60,9 +58,7 @@ export class CategoryRepository extends Repository<Category> {
 
   async findById(id: string): Promise<Category> {
     try {
-      const category = await this.findOneBy({ id });
-
-      return category;
+      return await this.findOneBy({ id });
     } catch (error) {
       this.logger.error(`Error getting a category by id`, error);
       throw new InternalServerErrorException();

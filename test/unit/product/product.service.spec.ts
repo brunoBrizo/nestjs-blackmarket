@@ -32,20 +32,22 @@ describe('ProductService', () => {
     id: faker.datatype.uuid(),
     name: faker.commerce.productAdjective(),
     description: faker.commerce.productDescription(),
-    created_at: faker.date.recent(),
-    updated_at: faker.date.recent(),
-    products: []
+    createdAt: faker.date.recent(),
+    updatedAt: faker.date.recent(),
+    products: [],
+    subCategories: []
   };
 
   const mockProduct: Product = {
     id: faker.datatype.uuid(),
-    name: productName,
+    name: faker.commerce.productName(),
     description: faker.commerce.productDescription(),
     price: parseFloat(faker.commerce.price()),
     stock: parseInt(faker.random.numeric(2)),
-    created_at: faker.date.recent(),
-    updated_at: faker.date.recent(),
-    category: mockCategory
+    createdAt: faker.date.recent(),
+    updatedAt: faker.date.recent(),
+    category: mockCategory,
+    subCategory: null
   };
 
   const mockProductRepository = {

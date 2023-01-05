@@ -1,3 +1,4 @@
+import { DESCRIPTION_MAX_LENGTH, NAME_MAX_LENGTH } from '@src/shared/utils';
 import {
   IsNotEmpty,
   IsNumber,
@@ -9,12 +10,12 @@ import {
 export class CreateProductDto {
   @IsString()
   @IsNotEmpty()
-  @MaxLength(30)
+  @MaxLength(NAME_MAX_LENGTH)
   name: string;
 
   @IsString()
   @IsNotEmpty()
-  @MaxLength(200)
+  @MaxLength(DESCRIPTION_MAX_LENGTH)
   description: string;
 
   @IsNumber({ maxDecimalPlaces: 2 })
