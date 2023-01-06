@@ -53,6 +53,18 @@ export class ProductRepository extends Repository<Product> {
     }
   }
 
+  async getAll(take: number, skip: number) {
+    try {
+      return await this.find({
+        take,
+        skip
+      });
+    } catch (error) {
+      this.logger.error(`Error getting all products`, error);
+      throw new InternalServerErrorException();
+    }
+  }
+
   async findByName(name: string): Promise<Product> {
     try {
       return await this.findOneBy({ name });

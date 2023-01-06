@@ -8,13 +8,16 @@ import {
   Param,
   Post,
   Put,
-  UseGuards
+  UseGuards,
+  Get,
+  Query
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ProductService } from '@services/product';
 import { ValidateUserType } from '@decorators/auth';
 import { UserType } from '@enums/auth';
 import { UserTypeGuard } from '@shared/guards';
+import { PaginationDto } from '@dtos/shared';
 
 @Controller('product')
 @UseGuards(AuthGuard(), UserTypeGuard)
@@ -25,6 +28,11 @@ export class ProductController {
   @ValidateUserType(UserType.ADMIN)
   createProduct(@Body() createProductDto: CreateProductDto): Promise<Product> {
     return this.productService.createProduct(createProductDto);
+  }
+
+  @Get('/')
+  getAllProducts(@Query() paginationDto: PaginationDto) {
+    return this.productService.getAllProducts(paginationDto);
   }
 
   @Put('/:id')
