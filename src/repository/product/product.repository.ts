@@ -53,12 +53,11 @@ export class ProductRepository extends Repository<Product> {
     }
   }
 
-  async getAll(take: number, skip: number) {
+  async getAll(take: number, skip: number): Promise<Product[]> {
     try {
-      return await this.find({
-        take,
-        skip
-      });
+      const query = this.createQueryBuilder('products');
+
+      return await query.take(take).skip(skip).getMany();
     } catch (error) {
       this.logger.error(`Error getting all products`, error);
       throw new InternalServerErrorException();
