@@ -1,11 +1,17 @@
+import { SortProductsCriteria } from '@enums/products';
 import { SubCategory } from '@entities/subcategory';
 import { Category } from '@entities/category';
 import { Test, TestingModule } from '@nestjs/testing';
 import { faker } from '@faker-js/faker';
 import { ProductController } from '@controllers/product';
-import { CreateProductDto, UpdateProductDto } from '@dtos/product';
+import {
+  CreateProductDto,
+  GetProductsDto,
+  UpdateProductDto
+} from '@dtos/product';
 import { Product } from '@entities/product';
 import { ProductService } from '@services/product';
+import { OrderCriteria } from '@enums/order_criteria.enum';
 
 describe('ProductController', () => {
   let productController: ProductController;
@@ -23,6 +29,14 @@ describe('ProductController', () => {
     description: faker.commerce.productDescription(),
     price: parseFloat(faker.commerce.price()),
     stock: parseInt(faker.random.numeric(2))
+  };
+
+  const getProductsDto: GetProductsDto = {
+    take: 1,
+    skip: 0,
+    sort: SortProductsCriteria.CREATED_AT,
+    order: OrderCriteria.ASC,
+    search: ''
   };
 
   const mockCategory: Category = {
@@ -60,7 +74,8 @@ describe('ProductController', () => {
   const mockProductService = {
     createProduct: jest.fn().mockResolvedValue(mockProduct),
     updateProduct: jest.fn().mockResolvedValue(mockProduct),
-    deleteProduct: jest.fn().mockResolvedValue(undefined)
+    deleteProduct: jest.fn().mockResolvedValue(undefined),
+    getAllProducts: jest.fn().mockResolvedValue([mockProduct])
   };
 
   beforeAll(async () => {
@@ -102,5 +117,14 @@ describe('ProductController', () => {
     await expect(productController.deleteProduct(mockProduct.id)).resolves.toBe(
       undefined
     );
+  });
+
+  it('should get a list of products /GET / ', async () => {
+    const result: Product[] = await productController.getAllProducts(
+      getProductsDto
+    );
+
+    expect(result).not.toBeNull();
+    expect(result).toEqual([mockProduct]);
   });
 });

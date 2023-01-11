@@ -1,7 +1,11 @@
 import { CategoryRepository } from '@repository/category';
 import { Test, TestingModule } from '@nestjs/testing';
 import { faker } from '@faker-js/faker';
-import { CreateProductDto, UpdateProductDto } from '@dtos/product';
+import {
+  CreateProductDto,
+  GetProductsDto,
+  UpdateProductDto
+} from '@dtos/product';
 import { Product } from '@entities/product';
 import { ProductService } from '@services/product';
 import { getRepositoryToken } from '@nestjs/typeorm';
@@ -9,6 +13,8 @@ import { ProductRepository } from '@repository/product';
 import { Category } from '@entities/category';
 import { SubCategory } from '@entities/subcategory';
 import { SubCategoryRepository } from '@repository/subcategory';
+import { SortProductsCriteria } from '@enums/products';
+import { OrderCriteria } from '@enums/order_criteria.enum';
 
 describe('ProductService', () => {
   let productService: ProductService;
@@ -68,7 +74,8 @@ describe('ProductService', () => {
     deleteProduct: jest.fn().mockResolvedValue(undefined),
     findByName: jest.fn().mockResolvedValue(mockProduct),
     findOneBy: jest.fn().mockResolvedValue(mockProduct),
-    findById: jest.fn().mockResolvedValue(mockProduct)
+    findById: jest.fn().mockResolvedValue(mockProduct),
+    getAll: jest.fn().mockResolvedValue([mockProduct])
   };
 
   const mockCategoryRepository = {
@@ -77,6 +84,14 @@ describe('ProductService', () => {
 
   const mockSubCategoryRepository = {
     findById: jest.fn().mockResolvedValue(mockSubCategory)
+  };
+
+  const getProductsDto: GetProductsDto = {
+    take: 1,
+    skip: 0,
+    sort: SortProductsCriteria.CREATED_AT,
+    order: OrderCriteria.ASC,
+    search: ''
   };
 
   beforeAll(async () => {
@@ -128,5 +143,14 @@ describe('ProductService', () => {
     await expect(productService.deleteProduct(mockProduct.id)).resolves.toBe(
       undefined
     );
+  });
+
+  it('should get a list of products /GET / ', async () => {
+    const result: Product[] = await productService.getAllProducts(
+      getProductsDto
+    );
+
+    expect(result).not.toBeNull();
+    expect(result).toEqual([mockProduct]);
   });
 });
