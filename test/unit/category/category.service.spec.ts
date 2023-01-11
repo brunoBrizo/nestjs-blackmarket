@@ -25,7 +25,8 @@ describe('CategoryService', () => {
     description: faker.commerce.productDescription(),
     createdAt: faker.date.recent(),
     updatedAt: faker.date.recent(),
-    products: []
+    products: [],
+    subCategories: []
   };
 
   const mockCategoryRepository = {

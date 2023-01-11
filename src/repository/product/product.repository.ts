@@ -1,3 +1,4 @@
+import { SubCategory } from '@entities/subcategory';
 import { DataSource, Repository } from 'typeorm';
 import {
   ConflictException,
@@ -19,7 +20,8 @@ export class ProductRepository extends Repository<Product> {
 
   async createProduct(
     createProductDto: CreateProductDto,
-    category: Category
+    category: Category,
+    subCategory: SubCategory
   ): Promise<Product> {
     const { name, description, price, stock } = createProductDto;
 
@@ -28,7 +30,8 @@ export class ProductRepository extends Repository<Product> {
       description,
       price,
       stock,
-      category
+      category,
+      subCategory
     });
 
     try {
@@ -61,9 +64,7 @@ export class ProductRepository extends Repository<Product> {
 
   async findById(id: string): Promise<Product> {
     try {
-      const product = await this.findOneBy({ id });
-
-      return product;
+      return await this.findOneBy({ id });
     } catch (error) {
       this.logger.error(`Error getting a product by id`, error);
       throw new InternalServerErrorException();
