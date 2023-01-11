@@ -13,5 +13,5 @@ export class CreateSubCategoryDto {
   description: string;
 
   @IsUUID()
-  categoryId: string;
+  categoryId?: string;
 }
