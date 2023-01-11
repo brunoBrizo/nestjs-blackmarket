@@ -10,6 +10,8 @@ import { ErrorCodes } from '@enums/error_codes.enum';
 import { Product } from '@entities/product';
 import { CreateProductDto } from '@dtos/product';
 import { Category } from '@entities/category';
+import { SortProductsCriteria } from '@enums/products';
+import { OrderCriteria } from '@enums/order_criteria.enum';
 
 @Injectable()
 export class ProductRepository extends Repository<Product> {
@@ -53,11 +55,21 @@ export class ProductRepository extends Repository<Product> {
     }
   }
 
-  async getAll(take: number, skip: number): Promise<Product[]> {
+  async getAll(
+    take: number,
+    skip: number,
+    sort: SortProductsCriteria,
+    order: OrderCriteria
+  ): Promise<Product[]> {
     try {
       const query = this.createQueryBuilder('products');
+      const sortStr = `products.${sort}`;
 
-      return await query.take(take).skip(skip).getMany();
+      return await query
+        .take(take)
+        .skip(skip)
+        .orderBy(sortStr, order)
+        .getMany();
     } catch (error) {
       this.logger.error(`Error getting all products`, error);
       throw new InternalServerErrorException();

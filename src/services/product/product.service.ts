@@ -1,5 +1,9 @@
 import { Product } from '@entities/product';
-import { CreateProductDto, UpdateProductDto } from '@dtos/product';
+import {
+  CreateProductDto,
+  GetProductsDto,
+  UpdateProductDto
+} from '@dtos/product';
 import {
   BadRequestException,
   Injectable,
@@ -9,7 +13,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ProductRepository } from '@repository/product';
 import { CategoryRepository } from '@repository/category';
 import { SubCategoryRepository } from '@repository/subcategory';
-import { PaginationDto } from '@dtos/shared';
+import { SortProductsCriteria } from '@enums/products';
+import { OrderCriteria } from '@enums/order_criteria.enum';
 
 @Injectable()
 export class ProductService {
@@ -50,10 +55,15 @@ export class ProductService {
     );
   }
 
-  async getAllProducts(paginationDto: PaginationDto) {
-    const { take = 10, skip = 0 } = paginationDto;
+  async getAllProducts(getProductsDto: GetProductsDto) {
+    const {
+      take = 10,
+      skip = 0,
+      sort = SortProductsCriteria.CREATED_AT,
+      order = OrderCriteria.ASC
+    } = getProductsDto;
 
-    return await this.productRepository.getAll(take, skip);
+    return await this.productRepository.getAll(take, skip, sort, order);
   }
 
   async updateProduct(

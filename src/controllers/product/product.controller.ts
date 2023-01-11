@@ -1,4 +1,8 @@
-import { CreateProductDto, UpdateProductDto } from '@dtos/product';
+import {
+  CreateProductDto,
+  GetProductsDto,
+  UpdateProductDto
+} from '@dtos/product';
 import { Product } from '@entities/product';
 import {
   Body,
@@ -17,7 +21,6 @@ import { ProductService } from '@services/product';
 import { ValidateUserType } from '@decorators/auth';
 import { UserType } from '@enums/auth';
 import { UserTypeGuard } from '@shared/guards';
-import { PaginationDto } from '@dtos/shared';
 
 @Controller('product')
 @UseGuards(AuthGuard(), UserTypeGuard)
@@ -31,8 +34,8 @@ export class ProductController {
   }
 
   @Get('/')
-  getAllProducts(@Query() paginationDto: PaginationDto) {
-    return this.productService.getAllProducts(paginationDto);
+  getAllProducts(@Query() getProductsDto: GetProductsDto) {
+    return this.productService.getAllProducts(getProductsDto);
   }
 
   @Put('/:id')
