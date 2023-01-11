@@ -55,15 +55,16 @@ export class ProductService {
     );
   }
 
-  async getAllProducts(getProductsDto: GetProductsDto) {
+  async getAllProducts(getProductsDto: GetProductsDto): Promise<Product[]> {
     const {
       take = 10,
       skip = 0,
       sort = SortProductsCriteria.CREATED_AT,
-      order = OrderCriteria.ASC
+      order = OrderCriteria.ASC,
+      search
     } = getProductsDto;
 
-    return await this.productRepository.getAll(take, skip, sort, order);
+    return await this.productRepository.getAll(take, skip, sort, order, search);
   }
 
   async updateProduct(

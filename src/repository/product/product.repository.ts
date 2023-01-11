@@ -1,5 +1,5 @@
 import { SubCategory } from '@entities/subcategory';
-import { DataSource, Repository } from 'typeorm';
+import { Brackets, DataSource, Repository } from 'typeorm';
 import {
   ConflictException,
   Injectable,
@@ -59,11 +59,23 @@ export class ProductRepository extends Repository<Product> {
     take: number,
     skip: number,
     sort: SortProductsCriteria,
-    order: OrderCriteria
+    order: OrderCriteria,
+    search: string
   ): Promise<Product[]> {
     try {
-      const query = this.createQueryBuilder('products');
-      const sortStr = `products.${sort}`;
+      const query = this.createQueryBuilder('product');
+      const sortStr = `product.${sort}`;
+
+      if (search) {
+        query.where(
+          new Brackets(q =>
+            q.where(
+              'LOWER(product.name) LIKE LOWER(:search) OR LOWER(product.description) LIKE LOWER(:search)',
+              { search: `%${search}%` }
+            )
+          )
+        );
+      }
 
       return await query
         .take(take)
