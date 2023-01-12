@@ -21,7 +21,6 @@ import { ProductService } from '@services/product';
 import { ValidateUserType } from '@decorators/auth';
 import { UserType } from '@enums/auth';
 import { UserTypeGuard } from '@shared/guards';
-import { PaginationDto } from '@dtos/shared';
 
 @Controller('product')
 @UseGuards(AuthGuard(), UserTypeGuard)
