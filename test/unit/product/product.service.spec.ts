@@ -91,7 +91,8 @@ describe('ProductService', () => {
     skip: 0,
     sort: SortProductsCriteria.CREATED_AT,
     order: OrderCriteria.ASC,
-    search: ''
+    search: '',
+    categories: [mockCategory.id]
   };
 
   beforeAll(async () => {

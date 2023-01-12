@@ -61,10 +61,18 @@ export class ProductService {
       skip = 0,
       sort = SortProductsCriteria.CREATED_AT,
       order = OrderCriteria.ASC,
-      search
+      search,
+      categories = []
     } = getProductsDto;
 
-    return this.productRepository.getAll(take, skip, sort, order, search);
+    return this.productRepository.getAll(
+      take,
+      skip,
+      sort,
+      order,
+      search,
+      categories
+    );
   }
 
   async updateProduct(

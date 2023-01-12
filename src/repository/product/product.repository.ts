@@ -60,7 +60,8 @@ export class ProductRepository extends Repository<Product> {
     skip: number,
     sort: SortProductsCriteria,
     order: OrderCriteria,
-    search: string
+    search: string,
+    categories: string[]
   ): Promise<Product[]> {
     try {
       const query = this.createQueryBuilder('product');
@@ -75,6 +76,12 @@ export class ProductRepository extends Repository<Product> {
             )
           )
         );
+      }
+
+      if (categories.length > 0) {
+        query
+          .leftJoinAndSelect('product.category', 'category')
+          .where('category.id IN (:...categories)', { categories });
       }
 
       const result = await query

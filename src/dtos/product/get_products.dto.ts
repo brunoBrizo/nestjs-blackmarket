@@ -1,7 +1,7 @@
 import { PaginationDto } from '@dtos/shared';
 import { OrderCriteria } from '@enums/order_criteria.enum';
 import { SortProductsCriteria } from '@enums/products';
-import { IsEnum, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsEnum, IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class GetProductsDto extends PaginationDto {
   @IsEnum(SortProductsCriteria)
@@ -15,4 +15,9 @@ export class GetProductsDto extends PaginationDto {
   @IsOptional()
   @IsString()
   search?: string;
+
+  @IsOptional()
+  @IsArray()
+  @IsUUID('all', { each: true })
+  categories: string[];
 }
