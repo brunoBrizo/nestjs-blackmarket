@@ -9,6 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ProductRepository } from '@repository/product';
 import { CategoryRepository } from '@repository/category';
 import { SubCategoryRepository } from '@repository/subcategory';
+import { PaginationDto } from '@dtos/shared';
 
 @Injectable()
 export class ProductService {
@@ -47,6 +48,12 @@ export class ProductService {
       category,
       subCategory
     );
+  }
+
+  async getAllProducts(paginationDto: PaginationDto) {
+    const { take = 10, skip = 0 } = paginationDto;
+
+    return await this.productRepository.getAll(take, skip);
   }
 
   async updateProduct(
