@@ -77,11 +77,13 @@ export class ProductRepository extends Repository<Product> {
         );
       }
 
-      return await query
+      const response = await query
         .take(take)
         .skip(skip)
         .orderBy(sortStr, order)
         .getMany();
+
+      return response;
     } catch (error) {
       this.logger.error(`Error getting all products`, error);
       throw new InternalServerErrorException();

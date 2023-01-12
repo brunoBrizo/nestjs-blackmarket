@@ -64,7 +64,7 @@ export class ProductService {
       search
     } = getProductsDto;
 
-    return await this.productRepository.getAll(take, skip, sort, order, search);
+    return this.productRepository.getAll(take, skip, sort, order, search);
   }
 
   async updateProduct(
