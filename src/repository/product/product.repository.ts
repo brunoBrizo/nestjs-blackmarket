@@ -65,11 +65,13 @@ export class ProductRepository extends Repository<Product> {
       const query = this.createQueryBuilder('products');
       const sortStr = `products.${sort}`;
 
-      return await query
+      const result = await query
         .take(take)
         .skip(skip)
         .orderBy(sortStr, order)
         .getMany();
+
+      return result;
     } catch (error) {
       this.logger.error(`Error getting all products`, error);
       throw new InternalServerErrorException();

@@ -63,7 +63,7 @@ export class ProductService {
       order = OrderCriteria.ASC
     } = getProductsDto;
 
-    return await this.productRepository.getAll(take, skip, sort, order);
+    return this.productRepository.getAll(take, skip, sort, order);
   }
 
   async updateProduct(
