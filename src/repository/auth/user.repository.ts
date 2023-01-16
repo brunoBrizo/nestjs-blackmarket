@@ -9,6 +9,7 @@ import {
 import { User } from '@entities/auth';
 import { ErrorCodes } from '@enums/error_codes.enum';
 import { UserType } from '@enums/auth';
+import { Product } from '@entities/product';
 
 @Injectable()
 export class UserRepository extends Repository<User> {
@@ -56,6 +57,36 @@ export class UserRepository extends Repository<User> {
     } catch (error) {
       this.logger.error(
         `Error finding user by email. User email: ${email}`,
+        error.stack
+      );
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async loadUserProducts(user: User): Promise<Product[]> {
+    try {
+      const userProducts: Product[] = await this.createQueryBuilder()
+        .relation(User, 'favoriteProducts')
+        .of(user)
+        .loadMany();
+
+      return userProducts;
+    } catch (error) {
+      this.logger.error(
+        `Error loading products for user. User id: ${user.id}`,
+        error.stack
+      );
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async saveUser(user: User): Promise<User> {
+    try {
+      await this.save(user);
+      return user;
+    } catch (error) {
+      this.logger.error(
+        `Error saving a user. User id: ${user.id}`,
         error.stack
       );
       throw new InternalServerErrorException();

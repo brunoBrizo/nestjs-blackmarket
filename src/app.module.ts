@@ -7,6 +7,7 @@ import { configModuleOptions } from '@shared/config';
 import { ProductModule } from '@modules/product';
 import { CategoryModule } from '@modules/category';
 import { SubCategoryModule } from '@modules/subcategory';
+import { UserModule } from '@modules/user';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { SubCategoryModule } from '@modules/subcategory';
     AuthModule,
     ProductModule,
     CategoryModule,
-    SubCategoryModule
+    SubCategoryModule,
+    UserModule
   ]
 })
 export class AppModule {}
