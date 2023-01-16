@@ -31,14 +31,6 @@ describe('ProductController', () => {
     stock: parseInt(faker.random.numeric(2))
   };
 
-  const getProductsDto: GetProductsDto = {
-    take: 1,
-    skip: 0,
-    sort: SortProductsCriteria.CREATED_AT,
-    order: OrderCriteria.ASC,
-    search: ''
-  };
-
   const mockCategory: Category = {
     id: faker.datatype.uuid(),
     name: faker.commerce.productAdjective(),
