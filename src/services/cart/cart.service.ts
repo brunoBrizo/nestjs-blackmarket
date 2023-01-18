@@ -30,7 +30,15 @@ export class CartService {
   }
 
   async getCart(user: User): Promise<Cart> {
-    return await this.cartRepository.findByUser(user);
+    const cart = await this.cartRepository.findByUser(user);
+
+    if (!cart) {
+      throw new NotFoundException(
+        `User ${user.id} does not have an active cart`
+      );
+    }
+
+    return cart;
   }
 
   async deleteCart(cart: Cart): Promise<void> {
@@ -64,7 +72,7 @@ export class CartService {
     const price = product.price;
     const subTotalPrice = quantity * price;
 
-    let cart = await this.getCart(user);
+    let cart = await this.cartRepository.findByUser(user);
 
     if (cart) {
       const itemIndex = cart.items.findIndex(
@@ -90,12 +98,6 @@ export class CartService {
 
   async removeProductFromCart(user: User, productId: string): Promise<void> {
     const cart = await this.getCart(user);
-    if (!cart) {
-      throw new NotFoundException(
-        `User ${user.id} does not have an active cart`
-      );
-    }
-
     const itemIndex = cart.items.findIndex(item => item.productId == productId);
 
     if (itemIndex >= 0) {
