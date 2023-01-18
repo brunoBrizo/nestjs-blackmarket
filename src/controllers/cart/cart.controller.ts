@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   HttpCode,
   Param,
   Post,
@@ -35,5 +36,10 @@ export class CartController {
     @GetUser() user: User
   ): Promise<void> {
     await this.cartService.removeProductFromCart(user, productId);
+  }
+
+  @Get()
+  async getCart(@GetUser() user: User): Promise<Cart> {
+    return this.cartService.getCart(user);
   }
 }
