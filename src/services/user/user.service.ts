@@ -15,6 +15,7 @@ export class UserService {
   constructor(
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
+    @InjectRepository(ProductRepository)
     private productRepository: ProductRepository
   ) {}
 
