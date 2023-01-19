@@ -1,13 +1,16 @@
 import { User } from '@entities/auth';
+import { CartItem } from '@entities/cart';
 import { BaseEntity } from '@entities/base';
-import { CartItem } from '@interfaces/cart';
 import { ColumnNumericTransformer } from '@src/shared/utils';
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
 
 @Entity()
 export class Cart extends BaseEntity {
-  @Column('simple-json')
-  items: CartItem[];
+  @OneToMany(() => CartItem, cartItem => cartItem.cart, {
+    cascade: true,
+    eager: true
+  })
+  cartItems: CartItem[];
 
   @Column('numeric', {
     precision: 7,

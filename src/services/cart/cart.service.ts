@@ -1,6 +1,7 @@
+import { Product } from '@entities/product';
 import { AddProductToCartDto } from '@dtos/cart';
 import { User } from '@entities/auth';
-import { Cart } from '@entities/cart';
+import { Cart, CartItem } from '@entities/cart';
 import { NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CartRepository } from '@repository/cart';
@@ -16,14 +17,14 @@ export class CartService {
 
   private createCart(
     user: User,
-    addProductToCartDto: AddProductToCartDto,
+    product: Product,
+    quantity: number,
     subTotalPrice: number,
     price: number
   ): Cart {
     const newCart = this.cartRepository.create({
       user,
-      items: [{ ...addProductToCartDto, subTotalPrice, price }],
-      totalAmount: 0
+      cartItems: [{ product, quantity, subTotalPrice, price }]
     });
 
     return newCart;
@@ -51,7 +52,7 @@ export class CartService {
 
   private recalculateCart(cart: Cart): void {
     cart.totalAmount = 0;
-    cart.items.forEach(item => {
+    cart.cartItems.forEach(item => {
       cart.totalAmount += item.quantity * item.price;
     });
   }
@@ -75,21 +76,29 @@ export class CartService {
     let cart = await this.cartRepository.findByUser(user);
 
     if (cart) {
-      const itemIndex = cart.items.findIndex(
-        item => item.productId == productId
+      const itemIndex = cart.cartItems.findIndex(
+        item => item.productId === productId
       );
 
       if (itemIndex >= 0) {
-        const item = cart.items[itemIndex];
+        const item = cart.cartItems[itemIndex];
         item.quantity += quantity;
         item.subTotalPrice = item.quantity * price;
 
-        cart.items[itemIndex] = item;
+        cart.cartItems[itemIndex] = item;
       } else {
-        cart.items.push({ ...addProductToCartDto, subTotalPrice, price });
+        const cartItem: CartItem = {
+          cartId: cart.id,
+          productId,
+          price,
+          subTotalPrice,
+          quantity
+        };
+
+        cart.cartItems.push(cartItem);
       }
     } else {
-      cart = this.createCart(user, addProductToCartDto, subTotalPrice, price);
+      cart = this.createCart(user, product, quantity, subTotalPrice, price);
     }
 
     this.recalculateCart(cart);
@@ -98,20 +107,22 @@ export class CartService {
 
   async removeProductFromCart(user: User, productId: string): Promise<void> {
     const cart = await this.getCart(user);
-    const itemIndex = cart.items.findIndex(item => item.productId == productId);
+    const itemIndex = cart.cartItems.findIndex(
+      item => item.productId === productId
+    );
 
     if (itemIndex >= 0) {
-      const item = cart.items[itemIndex];
+      const item = cart.cartItems[itemIndex];
 
       if (item.quantity > 1) {
         item.quantity -= 1;
         item.subTotalPrice = item.quantity * item.price;
-        cart.items[itemIndex] = item;
+        cart.cartItems[itemIndex] = item;
       } else {
-        cart.items.splice(itemIndex, 1);
+        cart.cartItems.splice(itemIndex, 1);
       }
 
-      if (cart.items?.length > 0) {
+      if (cart.cartItems?.length > 0) {
         this.recalculateCart(cart);
         await this.cartRepository.saveCart(cart);
       } else {
