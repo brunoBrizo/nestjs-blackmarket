@@ -36,9 +36,6 @@ export class Product extends BaseEntity {
   @ManyToMany(() => User, user => user.favoriteProducts)
   users: User[];
 
-  @OneToMany(() => CartItem, cartItem => cartItem.product, {
-    cascade: true,
-    eager: true
-  })
+  @OneToMany(() => CartItem, cartItem => cartItem.product)
   cartItems: CartItem[];
 }
