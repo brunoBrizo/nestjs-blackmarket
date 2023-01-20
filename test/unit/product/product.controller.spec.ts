@@ -70,7 +70,8 @@ describe('ProductController', () => {
     updatedAt: faker.date.recent(),
     category: mockCategory,
     subCategory: mockSubCategory,
-    users: []
+    users: [],
+    cartItems: []
   };
 
   const mockProductService = {

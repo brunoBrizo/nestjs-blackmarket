@@ -27,7 +27,8 @@ describe('UserService', () => {
     updatedAt: faker.date.recent(),
     category: null,
     subCategory: null,
-    users: []
+    users: [],
+    cartItems: []
   };
 
   const mockUser: User = {
@@ -36,7 +37,18 @@ describe('UserService', () => {
     name: faker.name.firstName(),
     password: '$2b$10$.XdALYSNS4neCmlFS9jxSO5xWVWwJ73cZkAtOl9iQczfbXQgTi2Ce',
     type: UserType.ADMIN,
-    favoriteProducts: [new Product()]
+    favoriteProducts: [],
+    cart: null
+  };
+
+  const mockUserWithFavorites: User = {
+    id: faker.datatype.uuid(),
+    email: 'bbrizolara7@gmail.com',
+    name: faker.name.firstName(),
+    password: '$2b$10$.XdALYSNS4neCmlFS9jxSO5xWVWwJ73cZkAtOl9iQczfbXQgTi2Ce',
+    type: UserType.ADMIN,
+    favoriteProducts: [mockProduct],
+    cart: null
   };
 
   const mockUserRepository = {
@@ -46,7 +58,11 @@ describe('UserService', () => {
       .mockResolvedValueOnce([])
       .mockResolvedValueOnce([mockProduct]),
     findUserByEmail: jest.fn().mockResolvedValue(mockUser),
-    saveUser: jest.fn().mockResolvedValue(mockUser)
+    saveUser: jest
+      .fn()
+      .mockResolvedValue([])
+      .mockResolvedValueOnce(mockUserWithFavorites)
+      .mockResolvedValueOnce(mockUser)
   };
 
   const mockProductRepository = {
@@ -82,11 +98,14 @@ describe('UserService', () => {
     );
 
     expect(result).not.toBeNull();
-    expect(result).toEqual(mockUser);
+    expect(result).toEqual(mockUserWithFavorites);
   });
 
   it('should remove a product from user favorites', async () => {
-    const result = await userService.removeFavoriteProduct(productId, mockUser);
+    const result = await userService.removeFavoriteProduct(
+      productId,
+      mockUserWithFavorites
+    );
 
     expect(result).not.toBeNull();
     expect(result).toEqual(mockUser);
