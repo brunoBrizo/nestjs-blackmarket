@@ -1,6 +1,13 @@
 import { UserType } from '@enums/auth';
 import { Exclude } from 'class-transformer';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  JoinTable,
+  ManyToMany
+} from 'typeorm';
+import { Product } from '@entities/product';
 
 @Entity()
 export class User {
@@ -19,4 +26,20 @@ export class User {
 
   @Column()
   type: UserType;
+
+  @ManyToMany(() => Product, product => product.users, {
+    cascade: true
+  })
+  @JoinTable({
+    name: 'userProducts',
+    joinColumn: {
+      name: 'user',
+      referencedColumnName: 'id'
+    },
+    inverseJoinColumn: {
+      name: 'product',
+      referencedColumnName: 'id'
+    }
+  })
+  favoriteProducts: Product[];
 }

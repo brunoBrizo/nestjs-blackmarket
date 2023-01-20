@@ -23,7 +23,8 @@ describe('AuthService', () => {
     email: 'bbrizolara7@gmail.com',
     name: faker.name.firstName(),
     password: '$2b$10$.XdALYSNS4neCmlFS9jxSO5xWVWwJ73cZkAtOl9iQczfbXQgTi2Ce',
-    type: UserType.ADMIN
+    type: UserType.ADMIN,
+    favoriteProducts: []
   };
 
   const signInUserDto: SignInUserDto = {

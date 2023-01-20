@@ -1,7 +1,8 @@
 import { BaseEntity } from '@entities/base';
 import { Category } from '@entities/category';
 import { SubCategory } from '@entities/subcategory';
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToMany, ManyToOne } from 'typeorm';
+import { User } from '@entities/auth';
 
 @Entity()
 export class Product extends BaseEntity {
@@ -30,4 +31,7 @@ export class Product extends BaseEntity {
     onDelete: 'SET NULL'
   })
   subCategory: SubCategory;
+
+  @ManyToMany(() => User, user => user.favoriteProducts)
+  users: User[];
 }
