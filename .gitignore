@@ -36,3 +36,4 @@ lerna-debug.log*
 
 # DotEnv
 .env.stage.dev
+.env.stage.prod
