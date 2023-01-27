@@ -25,7 +25,8 @@ describe('UserController', () => {
     updatedAt: faker.date.recent(),
     category: null,
     subCategory: null,
-    users: []
+    users: [],
+    cartItems: []
   };
 
   const mockUser: User = {
@@ -34,7 +35,8 @@ describe('UserController', () => {
     name: faker.name.firstName(),
     password: '$2b$10$.XdALYSNS4neCmlFS9jxSO5xWVWwJ73cZkAtOl9iQczfbXQgTi2Ce',
     type: UserType.ADMIN,
-    favoriteProducts: [mockProduct]
+    favoriteProducts: [mockProduct],
+    cart: null
   };
 
   const mockUserService = {

@@ -1,8 +1,9 @@
 import { BaseEntity } from '@entities/base';
 import { Category } from '@entities/category';
 import { SubCategory } from '@entities/subcategory';
-import { Column, Entity, ManyToMany, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
 import { User } from '@entities/auth';
+import { CartItem } from '@entities/cart';
 
 @Entity()
 export class Product extends BaseEntity {
@@ -34,4 +35,7 @@ export class Product extends BaseEntity {
 
   @ManyToMany(() => User, user => user.favoriteProducts)
   users: User[];
+
+  @OneToMany(() => CartItem, cartItem => cartItem.product)
+  cartItems: CartItem[];
 }

@@ -24,7 +24,8 @@ describe('AuthService', () => {
     name: faker.name.firstName(),
     password: '$2b$10$.XdALYSNS4neCmlFS9jxSO5xWVWwJ73cZkAtOl9iQczfbXQgTi2Ce',
     type: UserType.ADMIN,
-    favoriteProducts: []
+    favoriteProducts: [],
+    cart: null
   };
 
   const signInUserDto: SignInUserDto = {

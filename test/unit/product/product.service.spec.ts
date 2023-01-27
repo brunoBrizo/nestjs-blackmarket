@@ -66,7 +66,8 @@ describe('ProductService', () => {
     updatedAt: faker.date.recent(),
     category: mockCategory,
     subCategory: mockSubCategory,
-    users: []
+    users: [],
+    cartItems: []
   };
 
   const mockProductRepository = {

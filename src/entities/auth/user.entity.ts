@@ -5,9 +5,11 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   JoinTable,
-  ManyToMany
+  ManyToMany,
+  OneToOne
 } from 'typeorm';
 import { Product } from '@entities/product';
+import { Cart } from '@entities/cart';
 
 @Entity()
 export class User {
@@ -42,4 +44,7 @@ export class User {
     }
   })
   favoriteProducts: Product[];
+
+  @OneToOne(() => Cart, cart => cart.user)
+  cart: Cart;
 }
