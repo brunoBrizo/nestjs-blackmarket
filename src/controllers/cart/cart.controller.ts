@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   HttpCode,
+  HttpStatus,
   Param,
   Post,
   UseGuards
@@ -20,7 +21,7 @@ import { CartService } from '@services/cart';
 export class CartController {
   constructor(private cartService: CartService) {}
 
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   @Post()
   async addProductToCart(
     @Body() addProductToCartDto: AddProductToCartDto,
@@ -29,7 +30,7 @@ export class CartController {
     return this.cartService.addProductToCart(user, addProductToCartDto);
   }
 
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   @Delete('/:productId')
   async removeProductFromCart(
     @Param('productId') productId: string,
