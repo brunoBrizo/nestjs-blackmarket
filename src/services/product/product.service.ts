@@ -96,4 +96,28 @@ export class ProductService {
       throw new NotFoundException(`Product with id ${id} not found`);
     }
   }
+
+  async validateStock(id: string, quantity: number): Promise<boolean> {
+    const product = await this.productRepository.findById(id);
+    if (!product) {
+      throw new NotFoundException(`Product with id ${id} was not found`);
+    }
+
+    let result = false;
+    if (product.stock >= quantity) {
+      result = true;
+    }
+
+    return result;
+  }
+
+  async updateStock(id: string, quantity: number): Promise<void> {
+    const product = await this.productRepository.findById(id);
+    if (!product) {
+      throw new NotFoundException(`Product with id ${id} was not found`);
+    }
+
+    product.stock -= quantity;
+    await this.productRepository.updateProduct(product);
+  }
 }

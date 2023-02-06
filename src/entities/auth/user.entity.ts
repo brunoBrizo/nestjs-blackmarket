@@ -6,10 +6,13 @@ import {
   PrimaryGeneratedColumn,
   JoinTable,
   ManyToMany,
-  OneToOne
+  OneToOne,
+  OneToMany
 } from 'typeorm';
 import { Product } from '@entities/product';
 import { Cart } from '@entities/cart';
+import { UserAddress } from '@entities/auth';
+import { Order } from '@entities/order';
 
 @Entity()
 export class User {
@@ -47,4 +50,10 @@ export class User {
 
   @OneToOne(() => Cart, cart => cart.user)
   cart: Cart;
+
+  @OneToMany(() => UserAddress, userAddress => userAddress.user)
+  addressList: UserAddress[];
+
+  @OneToMany(() => Order, order => order.user)
+  orderList: Order[];
 }

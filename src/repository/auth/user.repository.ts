@@ -6,7 +6,7 @@ import {
   InternalServerErrorException,
   Logger
 } from '@nestjs/common';
-import { User } from '@entities/auth';
+import { User, UserAddress } from '@entities/auth';
 import { ErrorCodes } from '@enums/error_codes.enum';
 import { UserType } from '@enums/auth';
 import { Product } from '@entities/product';
@@ -74,6 +74,23 @@ export class UserRepository extends Repository<User> {
     } catch (error) {
       this.logger.error(
         `Error loading products for user. User id: ${user.id}`,
+        error.stack
+      );
+      throw new InternalServerErrorException();
+    }
+  }
+
+  async loadUserAddresses(user: User): Promise<UserAddress[]> {
+    try {
+      const userAddresses: UserAddress[] = await this.createQueryBuilder()
+        .relation(User, 'addressList')
+        .of(user)
+        .loadMany();
+
+      return userAddresses;
+    } catch (error) {
+      this.logger.error(
+        `Error loading addresses for user. User id: ${user.id}`,
         error.stack
       );
       throw new InternalServerErrorException();
