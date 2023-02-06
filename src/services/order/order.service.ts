@@ -29,15 +29,18 @@ export class OrderService {
     user: User,
     createOrderDto: CreateOrderDto
   ): Promise<Order> {
-    const cart = await this.cartRepository.findByUser(user);
+    const { userAddressId } = createOrderDto;
+
+    const [cart, userAddress] = await Promise.all([
+      this.cartRepository.findByUser(user),
+      this.validateUserAddress(user, userAddressId)
+    ]);
+
     if (!cart) {
       throw new NotFoundException(`User does not have an active cart`);
     }
 
-    const { userAddressId } = createOrderDto;
-    const userAddress = await this.validateUserAddress(user, userAddressId);
     const [orderItems, totalAmount] = this.getOrderItemsAndTotalAmount(cart);
-
     await this.validateProductsStock(orderItems);
 
     const order = this.orderRepository.create({
@@ -48,11 +51,13 @@ export class OrderService {
       userAddress
     });
 
-    await this.orderRepository.saveOrder(order);
-    this.logger.log(`Created order ${order.id} for user ${user.id}`);
+    await Promise.all([
+      await this.orderRepository.saveOrder(order),
+      await this.updateProductStock(order.orderItems),
+      await this.cartRepository.deleteCart(cart.id)
+    ]);
 
-    await this.updateProductStock(order.orderItems);
-    await this.cartRepository.deleteCart(cart.id);
+    this.logger.log(`Created order ${order.id} for user ${user.id}`);
 
     return order;
   }
