@@ -28,7 +28,8 @@ describe('UserService', () => {
     category: null,
     subCategory: null,
     users: [],
-    cartItems: []
+    cartItems: [],
+    orderItems: []
   };
 
   const mockUser: User = {
@@ -38,7 +39,9 @@ describe('UserService', () => {
     password: '$2b$10$.XdALYSNS4neCmlFS9jxSO5xWVWwJ73cZkAtOl9iQczfbXQgTi2Ce',
     type: UserType.ADMIN,
     favoriteProducts: [],
-    cart: null
+    cart: null,
+    orderList: [],
+    addressList: []
   };
 
   const mockUserWithFavorites: User = {
@@ -48,7 +51,9 @@ describe('UserService', () => {
     password: '$2b$10$.XdALYSNS4neCmlFS9jxSO5xWVWwJ73cZkAtOl9iQczfbXQgTi2Ce',
     type: UserType.ADMIN,
     favoriteProducts: [mockProduct],
-    cart: null
+    cart: null,
+    orderList: [],
+    addressList: []
   };
 
   const mockUserRepository = {

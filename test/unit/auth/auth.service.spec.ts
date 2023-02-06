@@ -25,7 +25,9 @@ describe('AuthService', () => {
     password: '$2b$10$.XdALYSNS4neCmlFS9jxSO5xWVWwJ73cZkAtOl9iQczfbXQgTi2Ce',
     type: UserType.ADMIN,
     favoriteProducts: [],
-    cart: null
+    cart: null,
+    orderList: [],
+    addressList: []
   };
 
   const signInUserDto: SignInUserDto = {
