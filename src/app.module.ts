@@ -10,6 +10,7 @@ import { SubCategoryModule } from '@modules/subcategory';
 import { UserModule } from '@modules/user';
 import { CartModule } from '@modules/cart';
 import { OrderModule } from '@modules/order';
+import { StripeModule } from '@modules/stripe';
 
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import { OrderModule } from '@modules/order';
     SubCategoryModule,
     UserModule,
     CartModule,
-    OrderModule
+    OrderModule,
+    StripeModule
   ]
 })
 export class AppModule {}

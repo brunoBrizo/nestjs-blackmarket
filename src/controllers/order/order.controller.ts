@@ -5,18 +5,26 @@ import { User } from '@entities/auth';
 import { OrderService } from '@services/order';
 import { Order } from '@entities/order';
 import { CreateOrderDto } from '@dtos/order';
+import Stripe from 'stripe';
+import { HttpStatus } from '@nestjs/common/enums';
 
 @Controller('order')
 @UseGuards(AuthGuard())
 export class OrderController {
   constructor(private orderService: OrderService) {}
 
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   @Post()
   async createOrder(
     @Body() createOrderDto: CreateOrderDto,
     @GetUser() user: User
   ): Promise<Order> {
     return this.orderService.createOrder(user, createOrderDto);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Post('stripe_webhook')
+  async stripeWebhook(@Body() event: Stripe.Event): Promise<void> {
+    return this.orderService.updatePaymentStatus(event);
   }
 }

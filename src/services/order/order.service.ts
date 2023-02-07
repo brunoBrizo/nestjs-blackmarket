@@ -3,12 +3,15 @@ import { User, UserAddress } from '@entities/auth';
 import { Cart } from '@entities/cart';
 import { Order, OrderItem } from '@entities/order';
 import { PaymentStatus } from '@enums/order';
+import { PaymentIntentEvent } from '@enums/stripe';
 import { ConflictException, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from '@repository/auth';
 import { CartRepository } from '@repository/cart';
 import { OrderRepository } from '@repository/order';
 import { ProductService } from '@services/product';
+import { StripeService } from '@services/stripe';
+import { Stripe } from 'stripe';
 
 export class OrderService {
   private logger: Logger = new Logger('OrderService', {
@@ -22,7 +25,8 @@ export class OrderService {
     private cartRepository: CartRepository,
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
-    private productService: ProductService
+    private productService: ProductService,
+    private stripeService: StripeService
   ) {}
 
   async createOrder(
@@ -59,6 +63,7 @@ export class OrderService {
 
     this.logger.log(`Created order ${order.id} for user ${user.id}`);
 
+    await this.stripeService.createPaymentIntent(order.id, order.totalAmount);
     return order;
   }
 
@@ -117,5 +122,30 @@ export class OrderService {
     for (const item of orderItems) {
       await this.productService.updateStock(item.productId, item.quantity);
     }
+  }
+
+  async updatePaymentStatus(event: Stripe.Event): Promise<void> {
+    const orderId = event.data.object['metadata'].orderId;
+    const order = await this.orderRepository.findById(orderId);
+
+    switch (event.type) {
+      case PaymentIntentEvent.Succeeded:
+        order.paymentStatus = PaymentStatus.Succeeded;
+        break;
+
+      case PaymentIntentEvent.Processing:
+        order.paymentStatus = PaymentStatus.Processing;
+        break;
+
+      case PaymentIntentEvent.Failed:
+        order.paymentStatus = PaymentStatus.Failed;
+        break;
+
+      default:
+        order.paymentStatus = PaymentStatus.Created;
+        break;
+    }
+
+    await this.orderRepository.saveOrder(order);
   }
 }
