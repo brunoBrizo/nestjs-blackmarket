@@ -8,14 +8,14 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from '@shared/config';
 import { jwtModuleOptions } from '@shared/config';
-import { User } from '@entities/auth';
+import { User, UserAddress } from '@entities/auth';
 
 @Module({
   imports: [
     ConfigModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync(jwtModuleOptions),
-    TypeOrmModule.forFeature([User])
+    TypeOrmModule.forFeature([User, UserAddress])
   ],
   controllers: [AuthController],
   providers: [AuthService, UserRepository, JwtStrategy],

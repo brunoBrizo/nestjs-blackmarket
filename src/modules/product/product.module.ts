@@ -16,6 +16,7 @@ import { SubCategoryRepository } from '@repository/subcategory';
     ProductRepository,
     CategoryRepository,
     SubCategoryRepository
-  ]
+  ],
+  exports: [ProductService]
 })
 export class ProductModule {}

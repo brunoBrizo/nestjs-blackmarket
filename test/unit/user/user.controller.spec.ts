@@ -26,7 +26,8 @@ describe('UserController', () => {
     category: null,
     subCategory: null,
     users: [],
-    cartItems: []
+    cartItems: [],
+    orderItems: []
   };
 
   const mockUser: User = {
@@ -36,7 +37,9 @@ describe('UserController', () => {
     password: '$2b$10$.XdALYSNS4neCmlFS9jxSO5xWVWwJ73cZkAtOl9iQczfbXQgTi2Ce',
     type: UserType.ADMIN,
     favoriteProducts: [mockProduct],
-    cart: null
+    cart: null,
+    orderList: [],
+    addressList: []
   };
 
   const mockUserService = {

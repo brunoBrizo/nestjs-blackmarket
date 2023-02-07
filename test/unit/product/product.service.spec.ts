@@ -67,7 +67,8 @@ describe('ProductService', () => {
     category: mockCategory,
     subCategory: mockSubCategory,
     users: [],
-    cartItems: []
+    cartItems: [],
+    orderItems: []
   };
 
   const mockProductRepository = {

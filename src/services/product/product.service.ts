@@ -6,6 +6,7 @@ import {
 } from '@dtos/product';
 import {
   BadRequestException,
+  ConflictException,
   Injectable,
   NotFoundException
 } from '@nestjs/common';
@@ -95,5 +96,31 @@ export class ProductService {
     if (result === 0) {
       throw new NotFoundException(`Product with id ${id} not found`);
     }
+  }
+
+  async validateStock(id: string, quantity: number): Promise<boolean> {
+    const product = await this.productRepository.findById(id);
+    if (!product) {
+      throw new NotFoundException(`Product with id ${id} was not found`);
+    }
+
+    return product.stock >= quantity;
+  }
+
+  async updateStock(id: string, quantity: number): Promise<void> {
+    const product = await this.productRepository.findById(id);
+    if (!product) {
+      throw new NotFoundException(`Product with id ${id} was not found`);
+    }
+
+    if (product.stock >= quantity) {
+      product.stock -= quantity;
+    } else {
+      throw new ConflictException(
+        `Insufficient stock for product ${product.id}`
+      );
+    }
+
+    await this.productRepository.updateProduct(product);
   }
 }

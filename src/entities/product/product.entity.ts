@@ -4,6 +4,7 @@ import { SubCategory } from '@entities/subcategory';
 import { Column, Entity, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
 import { User } from '@entities/auth';
 import { CartItem } from '@entities/cart';
+import { OrderItem } from '@entities/order';
 
 @Entity()
 export class Product extends BaseEntity {
@@ -38,4 +39,7 @@ export class Product extends BaseEntity {
 
   @OneToMany(() => CartItem, cartItem => cartItem.product)
   cartItems: CartItem[];
+
+  @OneToMany(() => OrderItem, orderItem => orderItem.product)
+  orderItems: OrderItem[];
 }
