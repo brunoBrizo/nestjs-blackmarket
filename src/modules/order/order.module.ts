@@ -2,6 +2,7 @@ import { OrderController } from '@controllers/order';
 import { Order, OrderItem } from '@entities/order';
 import { AuthModule } from '@modules/auth';
 import { ProductModule } from '@modules/product';
+import { StripeModule } from '@modules/stripe';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRepository } from '@repository/auth';
@@ -13,7 +14,8 @@ import { OrderService } from '@services/order';
   imports: [
     TypeOrmModule.forFeature([Order, OrderItem]),
     AuthModule,
-    ProductModule
+    ProductModule,
+    StripeModule
   ],
   controllers: [OrderController],
   providers: [OrderRepository, CartRepository, OrderService, UserRepository]

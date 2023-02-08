@@ -25,6 +25,15 @@ export class OrderRepository extends Repository<Order> {
     }
   }
 
+  async findById(id: string): Promise<Order> {
+    try {
+      return await this.findOneBy({ id });
+    } catch (error) {
+      this.logger.error(`Error getting an order by id`, error);
+      throw new InternalServerErrorException();
+    }
+  }
+
   async saveOrder(order: Order): Promise<Order> {
     try {
       await this.save(order);
