@@ -6,11 +6,11 @@ import { PaymentStatus } from '@enums/order';
 import { PaymentIntentEvent } from '@enums/stripe';
 import { ConflictException, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserRepository } from '@repository/auth';
-import { CartRepository } from '@repository/cart';
 import { OrderRepository } from '@repository/order';
+import { CartService } from '@services/cart';
 import { ProductService } from '@services/product';
 import { StripeService } from '@services/stripe';
+import { UserService } from '@services/user';
 import { Stripe } from 'stripe';
 
 export class OrderService {
@@ -21,11 +21,9 @@ export class OrderService {
   constructor(
     @InjectRepository(OrderRepository)
     private orderRepository: OrderRepository,
-    @InjectRepository(CartRepository)
-    private cartRepository: CartRepository,
-    @InjectRepository(UserRepository)
-    private userRepository: UserRepository,
+    private userService: UserService,
     private productService: ProductService,
+    private cartService: CartService,
     private stripeService: StripeService
   ) {}
 
@@ -36,7 +34,7 @@ export class OrderService {
     const { userAddressId } = createOrderDto;
 
     const [cart, userAddress] = await Promise.all([
-      this.cartRepository.findByUser(user),
+      this.cartService.getCart(user),
       this.validateUserAddress(user, userAddressId)
     ]);
 
@@ -58,7 +56,7 @@ export class OrderService {
     await Promise.all([
       await this.orderRepository.saveOrder(order),
       await this.updateProductStock(order.orderItems),
-      await this.cartRepository.deleteCart(cart.id)
+      await this.cartService.deleteCart(cart)
     ]);
 
     this.logger.log(`Created order ${order.id} for user ${user.id}`);
@@ -71,7 +69,7 @@ export class OrderService {
     user: User,
     userAddressId: string
   ): Promise<UserAddress> {
-    user.addressList = await this.userRepository.loadUserAddresses(user);
+    user = await this.userService.loadUser(user, true);
     const validAddress = user.addressList.find(
       address => address.id === userAddressId
     );

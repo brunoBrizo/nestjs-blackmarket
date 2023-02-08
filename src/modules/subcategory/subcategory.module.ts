@@ -4,12 +4,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from '@modules/auth';
 import { SubCategoryController } from '@controllers/subcategory';
 import { SubCategoryService } from '@services/subcategory';
-import { CategoryRepository } from '@repository/category';
 import { SubCategoryRepository } from '@repository/subcategory';
+import { CategoryModule } from '@modules/category';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([SubCategory]), AuthModule],
+  imports: [
+    TypeOrmModule.forFeature([SubCategory]),
+    AuthModule,
+    CategoryModule
+  ],
   controllers: [SubCategoryController],
-  providers: [SubCategoryService, SubCategoryRepository, CategoryRepository]
+  providers: [SubCategoryService, SubCategoryRepository],
+  exports: [SubCategoryService]
 })
 export class SubCategoryModule {}

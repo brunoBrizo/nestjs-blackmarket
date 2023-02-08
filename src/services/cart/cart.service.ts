@@ -5,14 +5,13 @@ import { Cart, CartItem } from '@entities/cart';
 import { NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CartRepository } from '@repository/cart';
-import { ProductRepository } from '@repository/product';
+import { ProductService } from '@services/product';
 
 export class CartService {
   constructor(
     @InjectRepository(CartRepository)
     private cartRepository: CartRepository,
-    @InjectRepository(ProductRepository)
-    private productRepository: ProductRepository
+    private productService: ProductService
   ) {}
 
   private createCart(
@@ -63,7 +62,7 @@ export class CartService {
   ): Promise<Cart> {
     const { productId, quantity } = addProductToCartDto;
 
-    const product = await this.productRepository.findById(productId);
+    const product = await this.productService.getProduct(productId);
     if (!product) {
       throw new NotFoundException(
         `Product with id: ${productId} was not found`

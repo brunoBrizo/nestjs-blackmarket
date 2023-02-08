@@ -5,18 +5,17 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from '@repository/auth';
-import { ProductRepository } from '@repository/product';
 import { AddFavoriteProductDto } from '@dtos/user';
 import { User } from '@entities/auth';
 import { Product } from '@entities/product';
+import { ProductService } from '@services/product';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
-    @InjectRepository(ProductRepository)
-    private productRepository: ProductRepository
+    private productService: ProductService
   ) {}
 
   async addFavoriteProduct(
@@ -30,7 +29,7 @@ export class UserService {
       throw new ConflictException('Product already added as favorite');
     }
 
-    const product = await this.productRepository.findById(productId);
+    const product = await this.productService.getProduct(productId);
     if (!product) {
       throw new NotFoundException(`Product ${productId} was not found`);
     }
@@ -54,6 +53,22 @@ export class UserService {
     );
 
     return this.userRepository.saveUser(user);
+  }
+
+  async loadUser(
+    user: User,
+    loadAddresses = false,
+    loadProducts = false
+  ): Promise<User> {
+    if (loadAddresses) {
+      user.addressList = await this.userRepository.loadUserAddresses(user);
+    }
+
+    if (loadProducts) {
+      user.favoriteProducts = await this.userRepository.loadUserProducts(user);
+    }
+
+    return user;
   }
 
   private isFavoriteProduct(
