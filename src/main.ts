@@ -2,7 +2,10 @@ import { validationPipeOptions } from '@shared/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
-import { TransformInterceptor } from '@shared/interceptors';
+import {
+  ResponseTimeInterceptor,
+  TransformInterceptor
+} from '@shared/interceptors';
 
 async function bootstrap() {
   const logger = new Logger('Main App');
@@ -12,6 +15,7 @@ async function bootstrap() {
   app.enableCors();
   app.useGlobalPipes(new ValidationPipe(validationPipeOptions));
   app.useGlobalInterceptors(new TransformInterceptor());
+  app.useGlobalInterceptors(new ResponseTimeInterceptor());
   await app.listen(port);
 
   logger.log(`App running on port ${port}`);
