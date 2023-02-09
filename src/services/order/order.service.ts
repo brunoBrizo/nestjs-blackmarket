@@ -54,9 +54,9 @@ export class OrderService {
     });
 
     await Promise.all([
-      await this.orderRepository.saveOrder(order),
-      await this.updateProductStock(order.orderItems),
-      await this.cartService.deleteCart(cart)
+      this.orderRepository.saveOrder(order),
+      this.updateProductStock(order.orderItems),
+      this.cartService.deleteCart(cart)
     ]);
 
     this.logger.log(`Created order ${order.id} for user ${user.id}`);

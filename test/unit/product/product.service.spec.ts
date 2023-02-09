@@ -1,4 +1,3 @@
-import { CategoryRepository } from '@repository/category';
 import { Test, TestingModule } from '@nestjs/testing';
 import { faker } from '@faker-js/faker';
 import {
@@ -12,9 +11,10 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { ProductRepository } from '@repository/product';
 import { Category } from '@entities/category';
 import { SubCategory } from '@entities/subcategory';
-import { SubCategoryRepository } from '@repository/subcategory';
 import { SortProductsCriteria } from '@enums/products';
 import { OrderCriteria } from '@enums/order_criteria.enum';
+import { CategoryService } from '@services/category';
+import { SubCategoryService } from '@services/subcategory';
 
 describe('ProductService', () => {
   let productService: ProductService;
@@ -81,14 +81,6 @@ describe('ProductService', () => {
     getAll: jest.fn().mockResolvedValue([mockProduct])
   };
 
-  const mockCategoryRepository = {
-    findById: jest.fn().mockResolvedValue(mockCategory)
-  };
-
-  const mockSubCategoryRepository = {
-    findById: jest.fn().mockResolvedValue(mockSubCategory)
-  };
-
   const getProductsDto: GetProductsDto = {
     take: 1,
     skip: 0,
@@ -98,24 +90,31 @@ describe('ProductService', () => {
     categories: [mockCategory.id]
   };
 
+  const mockCategoryService = {
+    getCategory: jest.fn().mockResolvedValue(mockCategory)
+  };
+
+  const mockSubCategoryService = {
+    getSubCategory: jest.fn().mockResolvedValue(mockSubCategory)
+  };
+
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ProductService,
+        CategoryService,
+        SubCategoryService,
         {
           provide: getRepositoryToken(ProductRepository),
           useValue: mockProductRepository
-        },
-        {
-          provide: getRepositoryToken(CategoryRepository),
-          useValue: mockCategoryRepository
-        },
-        {
-          provide: getRepositoryToken(SubCategoryRepository),
-          useValue: mockSubCategoryRepository
         }
       ]
-    }).compile();
+    })
+      .overrideProvider(CategoryService)
+      .useValue(mockCategoryService)
+      .overrideProvider(SubCategoryService)
+      .useValue(mockSubCategoryService)
+      .compile();
 
     productService = module.get<ProductService>(ProductService);
   });
