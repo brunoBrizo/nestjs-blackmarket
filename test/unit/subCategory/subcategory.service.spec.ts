@@ -6,7 +6,7 @@ import { CreateSubCategoryDto, UpdateSubCategoryDto } from '@dtos/subcategory';
 import { Category } from '@entities/category';
 import { SubCategory } from '@entities/subcategory';
 import { SubCategoryRepository } from '@repository/subcategory';
-import { CategoryRepository } from '@repository/category';
+import { CategoryService } from '@services/category';
 
 describe('SubCategoryService', () => {
   let subCategoryService: SubCategoryService;
@@ -50,24 +50,24 @@ describe('SubCategoryService', () => {
     deleteSubCategory: jest.fn().mockResolvedValue(1)
   };
 
-  const mockCategoryRepository = {
-    findById: jest.fn().mockResolvedValue(mockCategory)
+  const mockCategoryService = {
+    getCategory: jest.fn().mockResolvedValue(mockCategory)
   };
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         SubCategoryService,
+        CategoryService,
         {
           provide: getRepositoryToken(SubCategoryRepository),
           useValue: mockSubCategoryRepository
-        },
-        {
-          provide: getRepositoryToken(CategoryRepository),
-          useValue: mockCategoryRepository
         }
       ]
-    }).compile();
+    })
+      .overrideProvider(CategoryService)
+      .useValue(mockCategoryService)
+      .compile();
 
     subCategoryService = module.get<SubCategoryService>(SubCategoryService);
   });

@@ -30,6 +30,10 @@ export class CategoryService {
     return this.categoryRepository.updateCategory(updatedCategory);
   }
 
+  async getCategory(id: string): Promise<Category> {
+    return this.categoryRepository.findById(id);
+  }
+
   async deleteCategory(id: string): Promise<void> {
     const result = await this.categoryRepository.deleteCategory(id);
 

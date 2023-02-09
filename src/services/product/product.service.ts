@@ -12,33 +12,31 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductRepository } from '@repository/product';
-import { CategoryRepository } from '@repository/category';
-import { SubCategoryRepository } from '@repository/subcategory';
 import { SortProductsCriteria } from '@enums/products';
 import { OrderCriteria } from '@enums/order_criteria.enum';
+import { SubCategoryService } from '@services/subcategory';
+import { CategoryService } from '@services/category';
 
 @Injectable()
 export class ProductService {
   constructor(
     @InjectRepository(ProductRepository)
     private productRepository: ProductRepository,
-    @InjectRepository(CategoryRepository)
-    private categoryRepository: CategoryRepository,
-    @InjectRepository(SubCategoryRepository)
-    private subCategoryRepository: SubCategoryRepository
+    private categoryService: CategoryService,
+    private subCategoryService: SubCategoryService
   ) {}
 
   async createProduct(createProductDto: CreateProductDto): Promise<Product> {
     const { categoryId, subCategoryId } = createProductDto;
 
-    const subCategory = await this.subCategoryRepository.findById(
+    const subCategory = await this.subCategoryService.getSubCategory(
       subCategoryId
     );
     if (!subCategory) {
       throw new NotFoundException(`SubCategory ${subCategoryId} was not found`);
     }
 
-    const category = await this.categoryRepository.findById(categoryId);
+    const category = await this.categoryService.getCategory(categoryId);
     if (!category) {
       throw new NotFoundException(`Category ${categoryId} was not found`);
     }
@@ -74,6 +72,10 @@ export class ProductService {
       search,
       categories
     );
+  }
+
+  async getProduct(id: string): Promise<Product> {
+    return this.productRepository.findById(id);
   }
 
   async updateProduct(

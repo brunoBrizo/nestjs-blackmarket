@@ -5,18 +5,18 @@ import { ProductService } from '@services/product';
 import { ProductController } from '@controllers/product';
 import { AuthModule } from '@modules/auth';
 import { ProductRepository } from '@repository/product';
-import { CategoryRepository } from '@repository/category';
-import { SubCategoryRepository } from '@repository/subcategory';
+import { SubCategoryModule } from '@modules/subcategory';
+import { CategoryModule } from '@modules/category';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Product]), AuthModule],
-  controllers: [ProductController],
-  providers: [
-    ProductService,
-    ProductRepository,
-    CategoryRepository,
-    SubCategoryRepository
+  imports: [
+    TypeOrmModule.forFeature([Product]),
+    AuthModule,
+    SubCategoryModule,
+    CategoryModule
   ],
+  controllers: [ProductController],
+  providers: [ProductService, ProductRepository],
   exports: [ProductService]
 })
 export class ProductModule {}

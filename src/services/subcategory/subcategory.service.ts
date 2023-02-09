@@ -3,16 +3,15 @@ import { CreateSubCategoryDto, UpdateSubCategoryDto } from '@dtos/subcategory';
 import { SubCategory } from '@entities/subcategory';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CategoryRepository } from '@repository/category';
 import { SubCategoryRepository } from '@repository/subcategory';
+import { CategoryService } from '@services/category';
 
 @Injectable()
 export class SubCategoryService {
   constructor(
     @InjectRepository(SubCategoryRepository)
     private subCategoryRepository: SubCategoryRepository,
-    @InjectRepository(CategoryRepository)
-    private categoryRepository: CategoryRepository
+    private categoryService: CategoryService
   ) {}
 
   async createSubCategory(
@@ -55,8 +54,12 @@ export class SubCategoryService {
     }
   }
 
+  async getSubCategory(id: string): Promise<SubCategory> {
+    return this.subCategoryRepository.findById(id);
+  }
+
   private async getCategory(categoryId: string): Promise<Category> {
-    const category = await this.categoryRepository.findById(categoryId);
+    const category = await this.categoryService.getCategory(categoryId);
     if (!category) {
       throw new NotFoundException(`Category ${categoryId} was not found`);
     }
