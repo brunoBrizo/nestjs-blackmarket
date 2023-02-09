@@ -6,13 +6,21 @@ import {
   ResponseTimeInterceptor,
   TransformInterceptor
 } from '@shared/interceptors';
+import helmet from 'helmet';
 
 async function bootstrap() {
   const logger = new Logger('Main App');
   const port = process.env.PORT;
 
   const app = await NestFactory.create(AppModule);
-  app.enableCors();
+
+  app.enableCors({
+    origin: '*',
+    methods: 'GET,POST,PUT,DELETE',
+    allowedHeaders: ['Content-Type', 'Authorization']
+  });
+  app.use(helmet());
+
   app.useGlobalPipes(new ValidationPipe(validationPipeOptions));
   app.useGlobalInterceptors(new TransformInterceptor());
   app.useGlobalInterceptors(new ResponseTimeInterceptor());
