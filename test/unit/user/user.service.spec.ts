@@ -7,7 +7,7 @@ import { faker } from '@faker-js/faker';
 import { User } from '@entities/auth';
 import { AddFavoriteProductDto } from '@dtos/user';
 import { Product } from '@entities/product';
-import { ProductRepository } from '@repository/product';
+import { ProductService } from '@services/product';
 
 describe('UserService', () => {
   let userService: UserService;
@@ -70,24 +70,24 @@ describe('UserService', () => {
       .mockResolvedValueOnce(mockUser)
   };
 
-  const mockProductRepository = {
-    findById: jest.fn().mockResolvedValue(mockProduct)
+  const mockProductService = {
+    getProduct: jest.fn().mockResolvedValue(mockProduct)
   };
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         UserService,
+        ProductService,
         {
           provide: getRepositoryToken(UserRepository),
           useValue: mockUserRepository
-        },
-        {
-          provide: getRepositoryToken(ProductRepository),
-          useValue: mockProductRepository
         }
       ]
-    }).compile();
+    })
+      .overrideProvider(ProductService)
+      .useValue(mockProductService)
+      .compile();
 
     userService = module.get<UserService>(UserService);
   });
