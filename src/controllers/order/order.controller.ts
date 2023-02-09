@@ -7,6 +7,7 @@ import { Order } from '@entities/order';
 import { CreateOrderDto } from '@dtos/order';
 import Stripe from 'stripe';
 import { HttpStatus } from '@nestjs/common/enums';
+import { Throttle } from '@nestjs/throttler';
 
 @Controller('order')
 @UseGuards(AuthGuard())
@@ -15,6 +16,7 @@ export class OrderController {
 
   @HttpCode(HttpStatus.OK)
   @Post()
+  @Throttle(10, 60)
   async createOrder(
     @Body() createOrderDto: CreateOrderDto,
     @GetUser() user: User
@@ -24,6 +26,7 @@ export class OrderController {
 
   @HttpCode(HttpStatus.OK)
   @Post('stripe_webhook')
+  @Throttle(10, 60)
   async stripeWebhook(@Body() event: Stripe.Event): Promise<void> {
     return this.orderService.updatePaymentStatus(event);
   }

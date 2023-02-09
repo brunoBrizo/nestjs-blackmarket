@@ -6,12 +6,17 @@ import { CartRepository } from '@repository/cart';
 import { CartController } from '@controllers/cart';
 import { CartService } from '@services/cart';
 import { ProductModule } from '@modules/product';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Cart, CartItem]),
     AuthModule,
-    ProductModule
+    ProductModule,
+    ThrottlerModule.forRoot({
+      limit: 20,
+      ttl: 60
+    })
   ],
   controllers: [CartController],
   providers: [CartRepository, CartService],
